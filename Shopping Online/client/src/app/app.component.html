@@ -1,0 +1,53 @@
+<header>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-success mainNav" [ngClass]="{'no-border': shopComp }">
+    <a class="navbar-brand" [routerLink]="['/home']" (click)="fixOverflow()"
+      style="    -webkit-text-stroke: 0px;font-family: 'Lobster', cursive;">JB-Brunch</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item opaque" *ngIf="user?.userIdNum">
+          <a class="nav-link">Hello {{user.firstName}} - {{user.email}} | <mat-icon matTooltip="Logout"
+              TooltipVisibility='visible' [matTooltipPosition]="'below'" aria-label="Logout" (click)="logOut()"
+              class="logout">power_settings_new</mat-icon><span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item opaque" *ngIf="!user?.userIdNum">
+          <a class="nav-link">Hello Guest, Please log or sign in to enter our shop!<span
+              class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+<footer>
+  <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark bg-success">
+    <div class="collapse navbar-collapse" id="navbarText">
+      <span style="display: block; margin: auto;cursor:default;user-select: none;" class="navbar-text">
+        &copy;2019 Julian D. Shikui &#8212; Fullstack Web Developer
+        <span>
+          <a matTooltip="Linkedin profile" TooltipVisibility='visible' [matTooltipPosition]="'above'" aria-label="Linkedin profile" target="_blank" href="http://www.linkedin.com/in/jul-dev">
+            <img class="footerIcon" style="width: 10px; transform: scale(3) translate(5px);"
+              src="../assets/images/linkedin.svg" alt="Linkedin">
+          </a>
+        </span>
+        <span>
+          <a  target="_blank" href="https://github.com/JulzDave">
+            <img class="footerIcon" style="width: 10px; transform: scale(3) translate(15px);"
+              src="../assets/images/github-logo.svg" alt="Github" matTooltip="Github profile" TooltipVisibility='visible' [matTooltipPosition]="'above'" aria-label="Github profile">
+          </a>
+        </span>
+        <span>
+            <img (click)="downloadApiDoc()" class="footerIcon" style="width: 10px; transform: scale(3.2) translate(24px); cursor: pointer;"
+              src="../assets/images/Test, Preperation, Paper, Notes, Study, Exam, Result.svg" alt="api_doc" matTooltip="API documnet" TooltipVisibility='visible' [matTooltipPosition]="'above'" aria-label="Github profile">
+        </span>
+      </span>
+
+    </div>
+  </nav>
+</footer>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,11 @@
+.errCont {
+    padding: 4% 10%;
+    height: -webkit-fill-available;   
+    font-family: monospace;
+    display: flex;
+}
+.err {
+    margin: 20px;
+    height: 200px;
+    margin-top: 60px;
+}

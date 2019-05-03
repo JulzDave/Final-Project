@@ -1,0 +1,28 @@
+<div class="diagCont">
+  <h3 style="font-family:fantasy;text-decoration: underline;">{{chosenProduct.getElementsByTagName('mat-card-title')[0].innerText}}</h3>
+  <p style="max-height: 100px; font-family: 'Open Sans Condensed', sans-serif; font-weight: bold; overflow: auto;">{{this.chosenProduct.getElementsByTagName("mat-card-content")[0].innerText}}</p>
+  <div>
+    <img src='{{chosenProduct.getElementsByTagName("img")[0].currentSrc}}'
+      alt="{{chosenProduct.getElementsByTagName('mat-card-title')[0].innerText}}"
+      style="width: 150px; border-bottom-right-radius: 150px; border: 1px ridge brown;object-fit: cover; height: 100px;">
+    <p class="diagPrice ifSmallPic" [ngClass]="{ 'ifSmallPic': chosenProduct.getElementsByTagName('img')[0].height < chosenProduct.getElementsByTagName('img')[0].width}">${{this.chosenProduct.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1].substr(0,5)}}
+    </p>
+    <span style="font-family: serif; font-weight: bolder;position: relative; top: -50px;">Amount: {{amount}}</span>
+  </div>
+  <div class="ui">
+    <div class="additionCont">
+      <span><button mat-raised-button color="primary" class="red" (click)="minusP()">
+          <mat-icon>exposure_neg_1</mat-icon>
+        </button></span>
+      <span
+        class="prodPrice" [ngClass]="{ 'ifExpensive': totProdPrice.length > '5' }" >Total:<br />${{totProdPrice}}</span>
+      <span><button mat-raised-button color="primary" class="red" (click)="plusP()">
+          <mat-icon>exposure_plus_1</mat-icon>
+        </button></span>
+    </div>
+    <div class="action">
+      <button mat-stroked-button color="warn" [mat-dialog-close]="false">Cancel <mat-icon>cancel</mat-icon></button>
+      <button mat-stroked-button color="primary" [mat-dialog-close]="true" (click)="addProduct()">Proceed <mat-icon>add_shopping_cart</mat-icon></button>
+    </div>
+  </div>
+</div>

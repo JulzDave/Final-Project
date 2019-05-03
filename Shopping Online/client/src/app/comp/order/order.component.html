@@ -1,0 +1,181 @@
+<div class="orderCont" [ngClass]="{ 'is-disabled': success }">
+  <div *ngIf="success" class="success">
+    <h2 class="successHeader">Order Submission Successful</h2><br />
+    <p><span class="successDownloadreceipt" (click)="downloadPDF()">click here</span><span> to download your
+      receipt</span></p>
+    <p class="successReturn" (click)="return()">return to main page</p>
+  </div>
+  <div class="orderHeader" (click)="orderAction()">
+    <h1 class="txt">Order Now!</h1>
+  </div>
+  <div class="panel panelA">
+    <div class="panelCont">
+      <p class="panelHeader panelAHeader">Your cart:</p>
+      <form id="demo-2">
+        <input autocomplete="off" type="search" name="searchText" placeholder="Search" [(ngModel)]="searchText">
+      </form>
+      <br />
+      <div class="prodCont">
+        <table style="color:white;">
+          <tr class="arrangeProdInCart">
+            <div *ngFor="let product of order; let first = first" class="barProdCont">
+              <td><img matTooltip="{{product[1].title}}" TooltipVisibility='visible' [matTooltipPosition]="'after'"
+                  src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
+              <td class="barProd" matTooltip="{{product[1].title}}" TooltipVisibility='visible'
+                [matTooltipPosition]="'after'">
+                <span style="font-size:18px;cursor: default" ngxTextHighlight [content]="product[1].title"
+                  [searchTerm]="searchText" [caseSensitive]="false">
+                </span>
+                <span style="font-size:15px;cursor: default">&nbsp; - &times;{{product[0].amount}}
+                </span><br />
+                <span style="font-size:15px;cursor: default">Price: ${{product[0].totalPrice}}
+                </span>
+              </td>
+              <hr [ngClass]="{first: first }" style="background: darkslategrey;">
+            </div>
+          </tr>
+        </table>
+      </div>
+      <p class="totalPrice">Total order price: <span class="PriceNum">${{orderCost}}</span></p>
+      <div>
+        <mat-icon class="returnArrow" [routerLink]="['/shop']">keyboard_return</mat-icon>
+        <span class="returnMsg">Retrun to shopping page</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel panelB">
+    <div class="panelCont">
+      <p class="panelHeader panelBHeader">Shipping details:</p>
+
+      <form [formGroup]="orderDetails">
+        <div>
+          <table>
+            <tr class="orderInpTr" height="30">
+              <td>
+                <mat-form-field
+                  style="text-align:center;color:white;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 1px;">
+                  <input (dblclick)="autofiller($event)" style="cursor: copy;" autocomplete="off"
+                    matTooltip="Autofill on double click" [matTooltipPosition]="'above'"
+                    aria-label="Notify user on autofill" matInput placeholder="City" formControlName="city"
+                    [ngClass]="{ 'is-invalid': submitted && f4.city.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f4.city.errors">
+                  <div class="formErr blocked" *ngIf="f4.city.errors.required">City is required</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="orderInpTr" height="30">
+              <td>
+                <mat-form-field
+                  style="text-align:center;color:white;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 1px;">
+                  <input (dblclick)="autofiller($event)" style="cursor: copy;" autocomplete="off"
+                    matTooltip="Autofill on double click" [matTooltipPosition]="'above'"
+                    aria-label="Notify user on autofill" matInput placeholder="Street" formControlName="street"
+                    [ngClass]="{ 'is-invalid': submitted && f4.street.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f4.street.errors">
+                  <div class="formErr blocked" *ngIf="f4.street.errors.required">Street is required</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="orderInpTr" height="30">
+              <td>
+                <mat-form-field
+                  style="width: 102px; text-align:center;color:white;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 1px;">
+                  <input (dblclick)="autofiller($event)" style="cursor: copy;" autocomplete="off"
+                    matTooltip="Autofill on double click" [matTooltipPosition]="'above'"
+                    aria-label="Notify user on autofill" matInput placeholder="House Num" formControlName="houseNumber"
+                    type="number" min="1" [ngClass]="{ 'is-invalid': submitted && f4.houseNumber.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f4.houseNumber.errors">
+                  <div class="formErr blocked" *ngIf="f4.houseNumber.errors.required">House number is required</div>
+                </div>
+                <div *ngIf="submitted && f4.aptNumber.errors"
+                  [ngClass]="{'bottomErr': submitted && f4.houseNumber.errors}">
+                  <div class="formErr blocked" *ngIf="f4.aptNumber.errors.required">Apartment number is required</div>
+                </div>
+              </td>
+              <span style="color:white; margin-top: 20px;">&#x2215;</span>
+              <td>
+                <mat-form-field
+                  style="width: 55px; text-align:center;color:white;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 1px;">
+                  <input (dblclick)="autofiller($event)" style="cursor: copy;" autocomplete="off"
+                    matTooltip="Autofill on double click" [matTooltipPosition]="'above'"
+                    aria-label="Notify user on autofill" matInput placeholder="Apt." formControlName="aptNumber"
+                    type="number" min="1" [ngClass]="{ 'is-invalid': submitted && f4.aptNumber.errors }">
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+          <tr class="orderInpTr" height="30">
+            <td>
+              <p>
+                <mat-form-field style="text-align: center;"
+                  [ngClass]="{'hideTitle': submitted && f4.houseNumber.errors?.required && f4.aptNumber.errors?.required}">
+                  <input matInput [matDatepicker]="picker" placeholder="Desired Delivery Date" [min]="minDeliveryDate" [matDatepickerFilter]="myFilter"
+                    formControlName="deliveryDate" style="font-family: 'Open Sans Condensed', sans-serif; color:white;">
+                  <mat-datepicker-toggle matSuffix [for]="picker" style="color:gold;outline:none;">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </p>
+              <div style="margin-top: -35px;" class="formErr blocked"
+                *ngIf="submitted && (f4.deliveryDate.value == null)"
+                [ngClass]="{'marginate': submitted && f4.houseNumber.errors?.required && f4.aptNumber.errors?.required}">
+                Delivery date is
+                required</div>
+            </td>
+          </tr>
+          <tr class="orderInpTr" height="30">
+            <td>
+              <p>
+                <mat-form-field class="creditInp" style="margin-top: 2px;">
+                  <input autocomplete="off" (input)="creditCardValidation()" matInput placeholder="Credit card num."
+                    formControlName="creditCard" type="number" min="0"
+                    [ngClass]="{ 'is-invalid': submitted && f4.aptNumber.errors }">
+                </mat-form-field>
+              </p>
+              <img *ngIf="creditCardImg" src={{creditCardImg}} alt="visa"
+                style="width: 35px; position: relative; top: -57px; left: 7px;">
+              <mat-icon id="matIcon" *ngIf="matIcon" style="color:red;position: relative; top: -50px; left: 167px;">
+                {{matIcon}}</mat-icon>
+            </td>
+          </tr>
+          <tr class="orderInpTr" height="30" style="margin-bottom:1px;">
+            <td>
+              <mat-form-field matTooltip="Enter card expiry date (A remainder of at least a week is necessary)"
+                [matTooltipPosition]="'below'" aria-label="Notify user on expiry date" class="creditInp"
+                style="width: 102px; margin-right: 1px;">
+                <input matInput [matDatepicker]="picker2" [min]="minExpDate" placeholder="EXP."
+                  formControlName="expirationDate" style="font-family: 'Open Sans Condensed', sans-serif; color:white;"
+                  [ngClass]="{ 'is-invalid': submitted && f4.expirationDate.errors }">
+                <mat-datepicker-toggle matSuffix [for]="picker2" style="color:gold;outline:none;">
+                </mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker2 disabled="false"></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="submitted && f4.expirationDate.errors">
+                <div class="formErr blocked" *ngIf="f4.expirationDate.errors.required">Expiration date is required</div>
+              </div>
+              <div *ngIf="submitted && (f4.cvv.errors || f4.creditCard.errors || f4.expirationDate.value == null)"
+                [ngClass]="{'bottomErr': submitted && f4.expirationDate.errors}">
+                <br />
+                <div class="formErr blocked" *ngIf="f4.creditCard.errors?.required">Credit card number is required</div>
+                <br />
+                <div class="formErr blocked" *ngIf="f4.cvv.errors?.required">CVV number is required</div>
+                <div class="formErr blocked" *ngIf="f4.cvv.errors?.min && !f4.cvv.errors?.required">CVV number too short
+                </div><br />
+                <div class="formErr blocked" *ngIf="f4.expirationDate.value == null">Expiration date is required</div>
+              </div>
+            </td>
+            <td>
+              <mat-form-field class="creditInp" style="width:100px; margin-left: 1px;">
+                <input autocomplete="off" matInput placeholder="CVV" (input)="cvvLength($event.target.value)"
+                  formControlName="cvv" type="number" min="1" [ngClass]="{ 'is-invalid': submitted && f4.cvv.errors }">
+              </mat-form-field>
+            </td>
+          </tr>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

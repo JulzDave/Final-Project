@@ -1,0 +1,63 @@
+p.diagPrice {
+    position: relative;
+    top: -45px;
+    left: 100px;
+    width: 50px;
+    border: 2px dashed;
+    border-radius: 35px;
+    padding: 11px;
+    font-size: 15px;
+    text-indent: -3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: fantasy;
+    margin-left: 25px;
+}
+
+.red{
+    background: #d00000!important;
+}
+
+
+.additionCont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: absolute;
+    margin-left: -2px;
+    margin-top: -40px;
+    width: 210px;
+}
+
+.action {
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    margin-top: 28px;
+    margin-left: -12px;
+    width: 225px;
+}
+
+.ui {
+    display: flex;
+    position: relative;
+    height: 55px;
+    }
+
+.ifSmallPic{
+    margin-left: 30px;
+}
+
+.prodPrice{
+    font-family: serif;
+    font-weight: bolder;
+    padding: 0px 20px;
+    text-align: center;
+    width: 80px;
+    overflow: hidden;
+}
+
+.ifExpensive{
+    padding: 0px 13px;
+}

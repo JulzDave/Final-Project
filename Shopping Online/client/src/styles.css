@@ -1,0 +1,179 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+/* Import for the button by canvasplay*/
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,700,900');
+/* End of import for the button by canvasplay*/
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
+
+body{
+    background-image: linear-gradient(90deg, #d00000 10%, white 10%, white 90%, #d00000 90%);
+}
+
+/* Button by canvasplay URL: https://codepen.io/canvasplay/pen/WXWobd */
+.wrapper {
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.button {
+-webkit-touch-callout: none;
+  user-select: none;
+  display: inline-block;
+  border: 0.2em solid;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: #d00000;
+  opacity: 0.8;
+  color: black;
+}
+.button__text {
+  display: block;
+  padding: 1em 2em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.button__text:before {
+  content: attr(title);
+}
+.button__text--bis {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateX(-1em);
+  opacity: 0;
+}
+.button__mask {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  transform: translateX(-100%) rotate(45deg);
+  transition: all 0.3s;
+}
+.button:hover {
+  color: white;
+  opacity: 1;
+}
+.button:hover .button__text {
+  animation: fx-text 0.3s ease-out;
+}
+.button:hover .button__text--bis {
+  animation: fx-text-bis 0.3s ease-out;
+}
+.button:hover .button__mask {
+  animation: fx-mask 0.3s ease-out;
+}
+.button:active {
+  opacity: 1;
+  background: red;
+  color: white;
+}
+@keyframes fx-mask {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+@keyframes fx-text {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(1em);
+    opacity: 0;
+  }
+}
+@keyframes fx-text-bis {
+  0% {
+    transform: translateX(-1em);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* End of button by canvasplay*/
+
+/* Scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #212121; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d00000; 
+  border: 1px solid black;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(148, 39, 39); 
+}
+
+.ngx-text-highlight{
+  background:yellow;
+  color:black;
+}
+
+.mat-tooltip{
+  color:#d00000!important;
+  background: wheat;
+  font-weight: bolder;
+  border: 1px dashed black;
+  position: relative;
+  top:5px;
+}
+
+.fixed-bottom {
+  z-index: 1000;
+  border-top: 2px solid white;
+}
+
+.static{
+overflow-y: hidden; 
+}
+
+/* End of scrollbar */
+@media only screen and (max-width: 400px) {
+body {
+  background-repeat-x: no-repeat;
+  background-attachment: fixed;
+}
+}
+
+
+@media only screen and (min-width: 901px) {
+  body {
+    box-shadow:
+    inset 400px 0px 100px -400px black,
+    inset -400px 0px 100px -400px black;
+  }
+}
+
+::selection {
+  color: #d00000;
+  background: rgb(0, 204, 255);
+  -webkit-text-stroke: 1px #d00000;
+}

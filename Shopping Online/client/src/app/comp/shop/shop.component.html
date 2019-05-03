@@ -1,0 +1,263 @@
+<div class="shopCont">
+    <div class="wrapper">
+        <div id="sidebar">
+
+            <ul class="list-unstyled components">
+                <mat-form-field class="example-form-field">
+                    <input autocomplete="off" id="searchValue" class="sidebarInput" matInput type="text"
+                        placeholder="Search" [(ngModel)]="searchValue" (keydown.enter)="searchProduct()">
+                    <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear">
+                        <mat-icon (click)="searchProduct()">search</mat-icon>
+                        <mat-icon (click)="searchValue=null">close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <div class="sidebar-header" *ngIf="user.role === 'user'">
+                    <h4
+                        style="font-family:lobster;text-transform: lowercase;position: relative; top: -17px; left: -20px;">
+                        Cart status and information:
+                    </h4>
+                </div>
+                <div class="sidebar-header" *ngIf="user.role === 'admin'">
+                    <h4
+                        style="font-family:lobster;text-transform: lowercase;position: relative; top: -17px; left: -20px;">
+                        Add a new product:
+                    </h4>
+                </div>
+                <li *ngIf="cols < '2'">
+                    <a (click)="collapser()" class="sidebarCategories smallScreenCat" href="#homeSubmenu"
+                        data-toggle="collapse" aria-expanded="false">Categories</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <p class="navCat" (click)="activator($event)" id="dairy">Dairy</p>
+                        </li>
+                        <li>
+                            <p class="navCat" (click)="activator($event)" id="vegetable">Vegetables</p>
+                        </li>
+                        <li>
+                            <p class="navCat" (click)="activator($event)" id="fruit">Fruit</p>
+                        </li>
+                        <li>
+                            <p class="navCat" (click)="activator($event)" id="bakery">Pastry</p>
+                        </li>
+                        <li>
+                            <p class="navCat" (click)="activator($event)" id="meat">Eggs & Meat</p>
+                        </li>
+                    </ul>
+                </li>
+                <form *ngIf="user.role === 'admin'" [formGroup]="addProduct" class="adminForm">
+                    <mat-form-field>
+                        <input [ngClass]="{ 'is-invalid': submitted && f5.addProdTitle.errors }" autocomplete="off"
+                            formControlName="addProdTitle" class="sidebarInput" matInput type="text" placeholder="Title"
+                            maxlength="34">
+                        <button mat-button *ngIf="f5.addProdTitle.value" matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon (click)="f5.addProdTitle.setValue(null)">close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f5.addProdTitle.errors">
+                        <div class="formErr blocked" *ngIf="f5.addProdTitle.errors.required">Title required</div>
+                    </div>
+                    <mat-form-field>
+                        <textarea [ngClass]="{ 'is-invalid': submitted && f5.addProdDescription.errors }"
+                            style="overflow: hidden;" mat-autosize matInput placeholder="Product description"
+                            autocomplete="off" formControlName="addProdDescription" class="sidebarInput"></textarea>
+                        <button mat-button *ngIf="f5.addProdDescription.value" matSuffix mat-icon-button
+                            aria-label="Clear">
+                            <mat-icon (click)="f5.addProdDescription.setValue(null)">close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f5.addProdDescription.errors">
+                        <div class="formErr blocked" *ngIf="f5.addProdDescription.errors.required">Description required
+                        </div>
+                    </div>
+                    <mat-form-field>
+                        <input [ngClass]="{ 'is-invalid': submitted && f5.addProdPrice.errors }" autocomplete="off"
+                            formControlName="addProdPrice" class="sidebarInput" matInput type="number"
+                            placeholder="Price" min="0">
+                        <button mat-button *ngIf="f5.addProdPrice.value" matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon (click)="f5.addProdPrice.setValue(null)">close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f5.addProdPrice.errors">
+                        <div class="formErr blocked" *ngIf="f5.addProdPrice.errors.required">Price required</div>
+                        <div class="formErr blocked"
+                            *ngIf="(f5.addProdPrice.errors.min || f5.addProdPrice.errors.max) && !f5.addProdPrice.errors.required">
+                            $0.001 &lt; price &lt; $1000</div>
+                    </div>
+                    <mat-form-field>
+                        <mat-select id="selectType" [ngClass]="{ 'is-invalid': submitted && f5.addProdCategory.errors }"
+                            placeholder="Select Category" formControlName="addProdCategory" class="sidebarInput">
+                            <mat-option data-type="dairy" class="sidebarInput" value="5cab6fdbf0eb9b1b90c11de3">Dairy
+                            </mat-option>
+                            <mat-option data-type="vegetable" class="sidebarInput" value="5cab7008240e0a1b90211b06">
+                                Vegetable</mat-option>
+                            <mat-option data-type="fruit" class="sidebarInput" value="5cab7022240e0a1b90211b07">Fruit
+                            </mat-option>
+                            <mat-option data-type="bakery" class="sidebarInput" value="5cab7041240e0a1b90211b08">Pastry
+                            </mat-option>
+                            <mat-option data-type="meat" class="sidebarInput" value="5cab705b240e0a1b90211b09">Eggs &
+                                Meat</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f5.addProdCategory.errors">
+                        <div class="formErr blocked" *ngIf="f5.addProdCategory.errors.required">Category required</div>
+                    </div>
+                    <mat-form-field>
+                        <input [ngClass]="{ 'is-invalid': submitted && f5.addProdImg.errors }" autocomplete="off"
+                            formControlName="addProdImg" class="sidebarInput" matInput type="text"
+                            placeholder="Image url">
+                        <button mat-button *ngIf="f5.addProdImg.value" matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon (click)="f5.addProdImg.setValue(null)">close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f5.addProdImg.errors">
+                        <div class="formErr blocked" *ngIf="f5.addProdImg.errors.required">Image url required</div>
+                    </div>
+                </form>
+                <div class="prodInCart" *ngIf="user.role === 'user'">
+                    <table>
+                        <tr *ngIf="myCart?.length == '0' && firstUse">
+                            <td>
+                                <p class="sidebarMsg">
+                                    Welcome {{user.firstName}}.<br />
+                                    For your convenience,<br />
+                                    chosen products will be<br />
+                                    displayed in this section.<br />
+
+                                </p>
+                            </td>
+                        </tr>
+                        <tr *ngIf="orderCost == '0' && !firstUse">
+                            <td>
+                                <p class="sidebarMsg">
+                                    Your cart is empty <mat-icon style="transform: translate(0px, 7px);">
+                                        sentiment_very_dissatisfied</mat-icon>.<br />
+                                    Please click on the products' <br />
+                                    'Add' button to select items<br />
+                                    and put them in your cart.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="arrangeProdInCart">
+                            <div *ngFor="let product of myProducts; let first = first" class="barProdCont">
+                                <mat-icon class="deleteProd" id="{{product[0]._id}}" (click)="delProd($event)">close
+                                </mat-icon>
+                                <td><img matTooltip="{{product[1].title}}" [matTooltipPosition]="'right'"
+                                        src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
+                                <td class="barProd" matTooltip="{{product[1].title}}" [matTooltipPosition]="'right'">
+                                    <span style="font-size:18px;cursor: default"
+                                        [ngClass]="{ 'longTitle': product[1].title.length > '9' }">
+                                        {{product[1].title.substr(0, 9)}}</span>
+                                    <span style="font-size:15px;cursor: default">&nbsp; - &times;{{product[0].amount}}
+                                    </span><br />
+                                    <span style="font-size:15px;cursor: default">Price: ${{product[0].totalPrice}}
+                                    </span>
+                                </td>
+                                <hr [ngClass]="{first: first }"
+                                    style="background: darkslategrey; margin-top: 3px; margin-bottom: 12px;transform: scaleX(0.9);">
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+            </ul>
+            <ul *ngIf="user.role === 'admin' && !AdminEditMode" class="list-unstyled CTAs"
+                style="margin-top: 10px; margin-bottom: 0px;">
+                <li>
+                    <button (click)="Boss_AddProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 10px;">Add Product
+                        <mat-icon style="transform: translate(2px,-2px);">note_add</mat-icon> </button>
+                </li>
+            </ul>
+            <ul *ngIf="user.role === 'admin' && AdminEditMode" class="list-unstyled CTAs"
+                style="margin-top: -20px; margin-bottom: 0px;">
+                <li>
+                    <button (click)="boss_editProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold;">Edit Product
+                        <mat-icon style="transform: translate(2px,-2px);">edit</mat-icon> </button>
+                </li>
+            </ul>
+            <ul *ngIf="user.role === 'admin' && AdminEditMode" class="list-unstyled CTAs"
+                style="margin-top: -30px; margin-bottom: 0px;">
+                <li>
+                    <button (click)="Boss_goToAddNewProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 10px;">New product
+                        <mat-icon style="transform: translate(2px,-2px);">keyboard_return</mat-icon> </button>
+                </li>
+            </ul>
+            <ul *ngIf="user.role === 'user'" class="list-unstyled CTAs" style="margin-top: 10px; margin-bottom: 0px;"
+                [ngClass]="{'disabler': orderCost == '0'}">
+                <span
+                    style="cursor:default;font-family: lobster; position: absolute; margin-top: -31px; text-decoration: underline;">
+                    Total Payment: <span style="color:gold;">${{orderCost.toFixed(2)}}</span></span>
+                <li>
+                    <button (click)="goToOrder()" style="margin-bottom:5px;" class="sidebarBtn" mat-flat-button>Checkout
+                        Now <mat-icon>shopping_cart</mat-icon></button>
+                </li>
+                <li>
+                    <button style="color:white;background:black; margin-bottom: 10px;" color="primary" class="sidebarBtn" mat-flat-button
+                        (click)="discardCart()">Discard Cart <mat-icon>remove_shopping_cart</mat-icon></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <nav style="z-index: 929;display: flex; align-items: end;    border-bottom: 2px solid white;"
+        class="navbar fixed-top navbar-expand-lg navbar-dark bg-success secondaryNav">
+        <p (click)="toggleSidebar()" class="navbar-brand"
+            style="align-self:center; -webkit-text-stroke:0px;font-family: 'Lobster', cursive;font-size: 40px;cursor: pointer;margin-top: 15px;">
+            <mat-icon class="sidebarToggler">line_style</mat-icon>
+        </p>
+
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav" style="margin:auto; transform: translate(-30px, 0px);">
+                <li class="nav-item" style="cursor:pointer;">
+                    <span id="dairy" class="nav-link allCategories activateCategory"
+                        (click)="activator($event)">Dairy<span class="sr-only">(current)</span></span>
+                </li>
+                <li class="nav-item category" style="cursor:pointer;">
+                    <span id="vegetable" class="nav-link allCategories" (click)="activator($event)">Vegetables</span>
+                </li>
+                <li class="nav-item category" style="cursor:pointer;">
+                    <span id="fruit" class="nav-link allCategories" (click)="activator($event)">Fruit</span>
+                </li>
+                <li class="nav-item category" style="cursor:pointer;">
+                    <span id="bakery" class="nav-link allCategories" (click)="activator($event)">Pastry</span>
+                </li>
+                <li class="nav-item category" style="cursor:pointer;">
+                    <span id="meat" class="nav-link allCategories" (click)="activator($event)">Eggs & Meat</span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <br />
+
+
+
+    <div class="shopProducts">
+        <div *ngIf="category?.length === 0" style="color:beige;font-size:20px;">No matches found...</div>
+        <mat-grid-list cols="{{cols}}" rowHeight="750px" gutterSize="10px" (window:resize)="onResize()">
+            <mat-grid-tile *ngFor="let product of category">
+
+                <mat-card>
+                    <img id="{{product._id}}" mat-card-image src="{{product.url}}" alt="{{product.title}}">
+                    <mat-card-header>
+                        <mat-card-title>{{product.title}}</mat-card-title>
+                        <mat-card-subtitle class="pPrice">Price: ${{product.price}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>{{product.description}}</p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button *ngIf="user.role === 'user'" mat-raised-button color="primary" class="red"
+                            (click)="openRepDialog($event)">Add
+                            <mat-icon style="pointer-events: none;">add_shopping_cart</mat-icon></button>
+                        <button *ngIf="user.role === 'admin'" mat-raised-button color="primary" class="red"
+                            [ngClass]="{'inspected':AdminEditMode && prodID == product._id}"
+                            (click)="chooseProdToEdit($event)">Edit
+                            <mat-icon style="pointer-events: none;">edit</mat-icon></button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>

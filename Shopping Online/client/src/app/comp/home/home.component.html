@@ -1,0 +1,319 @@
+<!-- <h1 id="homeHeader">JB<br/>Market</h1> -->
+<div  class="homeCont" *ngIf="userFetchedDetails?.role === 'admin'"><div class="loader">Loading...</div></div>
+<div class="homeCont" *ngIf="userFetchedDetails?.role != 'admin'">
+
+
+  <!-- Login -->
+
+
+
+  <div id="logContofCont" *ngIf="alreadyRegistered">
+    <div *ngIf="userFetchedDetails" class="cont spring" id="loginCont"
+      style="transform: translate(-30px);font-weight: bold; letter-spacing: 4px;">
+      <img src="../../../assets/images/CachetFB-V.png" alt="Signed in as {{userFetchedDetails.userName}}"
+        class="stick"><br />
+      Welcome <span style="text-transform: capitalize;">{{userFetchedDetails.userName}}</span>!<br />
+      You are now logged in.<br />
+      Please click on the red button<br />
+      to enter the shop<br />
+      <!-- <span style="position: relative; top: -5px; left: 15px;"> or <button
+          style="font-size: 12.5px; position: relative; left: -15px; top: -1px;" class="btn btn-link"
+          (click)="logout()">log out</button></span> -->
+    </div>
+    <div class="cont" id="loginCont" *ngIf="!userFetchedDetails">
+      <form [formGroup]="loginForm">
+        <table>
+          <tr>
+            <th height="50" colspan="2"
+              style="text-align:center;font-family: 'Lobster', cursive;text-decoration: underline;">
+              <h2 style="margin-bottom: 25px;">Login</h2>
+            </th>
+          </tr>
+          <tr height="50">
+            <td>
+              <mat-form-field class="loginp">
+                <input matInput placeholder="User Name:" formControlName="userName">
+              </mat-form-field>
+              <div *ngIf="submitted && f3.userName.errors">
+                <div class="formErr blocked" *ngIf="f3.userName.errors.required">Please enter your user name</div>
+              </div>
+            </td>
+          </tr>
+          <tr height="50">
+            <td>
+              <mat-form-field class="loginp">
+                <input matInput placeholder="password:" formControlName="password" type="password">
+              </mat-form-field>
+              <div class="formErr blocked" *ngIf="submitted && loginErr == f3.password.value">User name or password
+                invalid!</div>
+              <div *ngIf="submitted && f3.password.errors">
+                <div class="formErr blocked" *ngIf="f3.password.errors.required">Don't forget your password!</div>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </form>
+      <br />
+      <div style="transform:translate(-40px)">
+        <div class="wrapper">
+          <div class="button" (click)="login()" style="transform: translate(-10px);">
+            <span class="button__mask"></span>
+            <span class="button__text" style="letter-spacing: 5px;font-family: serif;">LOGIN</span>
+            <span class="button__text button__text--bis" style="letter-spacing: 5px;font-family: serif;">LOGIN</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-link" style="margin-top: 12px;letter-spacing: 3px;"
+          (click)="isRegistered()">I don't have an
+          account <mat-icon style="position: relative; top: 6px;">person_add</mat-icon></button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- End of login -->
+
+  <!-- Register -->
+
+  <div id="regContofCont" *ngIf="!alreadyRegistered">
+    <div *ngIf="userFetchedDetails" class="cont"
+      style="transform: translate(-30px);font-weight: bold; letter-spacing: 4px;">
+      Welcome <font style="text-transform: capitalize;">{{userFetchedDetails.userName}}</font>!<br />
+      You are now logged in.<br />
+      Please click on the red button<br />
+      to enter the shop<br />
+      <font style="position: relative; top: -5px; left: 15px;"> or <button
+          style="font-size: 12.5px; position: relative; left: -15px; top: -1px;" class="btn btn-link"
+          (click)="logout()">log out</button></font>
+    </div>
+    <div class="cont" *ngIf="!userFetchedDetails">
+      <!-- <div *ngFor="let nogo of invalid">
+            {{nogo}}
+          </div> -->
+      <form [formGroup]="registerForm_step1">
+        <table *ngIf="!valid">
+          <tr>
+            <th height="50" colspan="2"
+              style="text-align:center;font-family: 'Lobster', cursive;text-decoration: underline;">
+              <h2 style="margin-bottom: 25px;">Register</h2>
+            </th>
+          </tr>
+          <div style="transform:translate(10px)">
+            <tr height="50">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="User Name:" formControlName="userName"
+                    [ngClass]="{ 'is-invalid': submitted && f.userName.errors }">
+                </mat-form-field>
+                <div class="formErr blocked" *ngIf="error_UN != null && DupErrUN === f.userName.value ">{{error_UN}}
+                </div>
+                <div *ngIf="submitted && f.userName.errors">
+                  <div class="formErr blocked" *ngIf="f.userName.errors.required">User name is required</div>
+                  <div class="formErr blocked" *ngIf="f.userName.errors.minlength">must contain at least 6 letters</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr height="50">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Email:" formControlName="email" type="email"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f.email.errors">
+                  <div class="formErr blocked" *ngIf="f.email.errors.required">Email is required</div>
+                  <div class="formErr blocked" *ngIf="f.email.errors.email">This Email is invalid</div>
+                </div>
+              </td>
+            </tr>
+            <tr height="50">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="ID:" formControlName="ID" type="number" min="0"
+                    [ngClass]="{ 'is-invalid': submitted && f.ID.errors }">
+                </mat-form-field>
+                <div class="formErr blocked" *ngIf="error_ID != null && DupErrID === f.ID.value ">{{error_ID}}</div>
+                <div *ngIf="submitted && f.ID.errors">
+                  <div class="formErr blocked" *ngIf="f.ID.errors.required">ID is required</div>
+                  <div class="formErr blocked" *ngIf="f.ID.errors.min">must contain least 6 digits</div>
+                </div>
+              </td>
+            </tr>
+            <tr height="50">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Choose Password:" formControlName="choosePassword" type="password"
+                    [ngClass]="{ 'is-invalid': submitted && f.choosePassword.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f.choosePassword.errors">
+                  <div class="formErr blocked" *ngIf="f.choosePassword.errors.required">choose a password</div>
+                  <div class="formErr blocked" *ngIf="f.choosePassword.errors.minlength">must contain at least 6 figures
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr height="50">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Choose Password:" formControlName="confirmPassword" type="password"
+                    [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }">
+                </mat-form-field>
+                <div class="formErr blocked" *ngIf="(submitted && f.choosePassword.value != f.confirmPassword.value)"
+                  [ngClass]="{'bottomErr': submitted && f.confirmPassword.errors.required}">Passwords do not match</div>
+                <div *ngIf="submitted && f.confirmPassword.errors">
+                  <div class="formErr blocked" *ngIf="f.confirmPassword.errors.required">Password confirmation required
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </div>
+        </table>
+      </form>
+
+      <form [formGroup]="registerForm_step2">
+        <table *ngIf="valid">
+          <tr>
+            <th height="30" colspan="2"
+              style="text-align:center;font-family: 'Lobster', cursive;text-decoration: underline;">
+              <h2 style="margin-bottom: 25px;transform: translate(-30px)">Register</h2>
+            </th>
+          </tr>
+          <div style="transform:translate(10px)">
+            <tr height="30">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="First Name:" formControlName="firstName"
+                    [ngClass]="{ 'is-invalid': submitted && f2.firstName.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f2.firstName.errors">
+                  <div class="formErr blocked" *ngIf="f2.firstName.errors.required">First name is required</div>
+                </div>
+              </td>
+            </tr>
+            <tr height="30">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Last Name:" formControlName="lastName"
+                    [ngClass]="{ 'is-invalid': submitted && f2.lastName.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f2.lastName.errors">
+                  <div class="formErr blocked" *ngIf="f2.lastName.errors.required">Last name is required</div>
+                </div>
+              </td>
+            </tr>
+            <tr height="30">
+              <td>
+                <mat-form-field>
+                  <mat-select placeholder="Select City" formControlName="city"
+                    [ngClass]="{ 'is-invalid': submitted && f2.city.errors }">
+                    <mat-option value="Tel Aviv-Yafo">Tel Aviv-Yafo</mat-option>
+                    <mat-option value="Rishon LeZion">Rishon LeZion</mat-option>
+                    <mat-option value="Petah Tikva">Petah Tikva</mat-option>
+                    <mat-option value="Ashdod">Ashdod</mat-option>
+                    <mat-option value="Netanya">Netanya</mat-option>
+                    <mat-option value="Holon">Holon</mat-option>
+                    <mat-option value="Bnei Brak">Bnei Brak</mat-option>
+                    <mat-option value="Ramat Gan">Ramat Gan</mat-option>
+                    <mat-option value="Rehovot">Rehovot</mat-option>
+                    <mat-option value="Bat Yam">Bat Yam</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="submitted && f2.city.errors">
+                  <div class="formErr blocked" *ngIf="f2.city.errors.required">City is required</div>
+                </div>
+              </td>
+            </tr>
+            <tr height="30">
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Street:" formControlName="street"
+                    [ngClass]="{ 'is-invalid': submitted && f2.street.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f2.street.errors">
+                  <div class="formErr blocked" *ngIf="f2.street.errors.required">Street is required</div>
+                </div>
+              </td>
+            </tr>
+            <tr height="30">
+              <td colspan="0.5">
+                <mat-form-field style="width: 102px; transform: translate(-40px);">
+                  <input matInput placeholder="House Num" formControlName="houseNumber" type="number" min="1"
+                    [ngClass]="{ 'is-invalid': submitted && f2.houseNumber.errors }">
+                </mat-form-field>
+                <div *ngIf="submitted && f2.houseNumber.errors">
+                  <div class="formErr blocked" *ngIf="f2.houseNumber.errors.required">House number is required</div>
+                </div>
+                <div *ngIf="submitted && f2.aptNumber.errors"
+                  [ngClass]="{'bottomErr': submitted && f2.houseNumber.errors}">
+                  <div class="formErr blocked" *ngIf="f2.aptNumber.errors.required">Apartment number is required</div>
+                </div>
+              </td>
+              <td colspan="0.5">
+                <mat-form-field style="width: 55px; transform: translate(-60px);">
+                  <input matInput placeholder="Apt." formControlName="aptNumber" type="number" min="1"
+                    [ngClass]="{ 'is-invalid': submitted && f2.aptNumber.errors }">
+                </mat-form-field>
+              </td>
+            </tr>
+          </div>
+        </table>
+      </form>
+      <div style="transform:translate(-40px)">
+        <div class="wrapper" style="margin-top: 25px;">
+          <div class="button" (click)=register()>
+            <span class="button__mask"></span>
+            <span class="button__text" style="letter-spacing: 5px;">{{reg_btn_val}} <font style="transform:scale(2);">
+                &#187;</font></span>
+            <span class="button__text button__text--bis" style="letter-spacing: 5px;">{{reg_btn_val}} &#187;</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-link" style="margin-top: 12px; letter-spacing: 3px;" (click)="isRegistered()">I already have an
+          account</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- End of Register -->
+
+  <div class="cont about bPanel">
+    <h2 style="font-family: 'Lobster', cursive;">Shop groceries online</h2>
+    <p style="font-family: 'Open Sans Condensed', sans-serif;letter-spacing: 1px;">From organic meat & fresh
+      produce<br />
+      to everyday essentials, choose from<br />
+      thousands of products.</p>
+    <h2 style="font-family: 'Lobster', cursive;">Schedule your delivery</h2>
+    <p style="font-family: 'Open Sans Condensed', sans-serif;letter-spacing: 1px;">Pick a delivery that's
+      convenient<br />
+      for you. Choose times as early as same<br />
+      day or next morning.</p>
+    <h2 style="font-family: 'Lobster', cursive;">Get it fast and fresh</h2>
+    <p style="font-family: 'Open Sans Condensed', sans-serif;letter-spacing: 1px;">We'll carefully handpick, pack
+      and<br />
+      deliver groceries to your door &#8212;<br />
+      satisfaction guaranteed.</p>
+  </div>
+  <div class="cont about cPanel">
+    <img src="../../../assets/images/groceries-1.png" style="width:70%;margin-bottom:30px;" alt="groceries" /><br />
+    <p>Available products in our store: <span>{{totalAmountOfProducts}}</span></p>
+    <p *ngIf="totalAmountOfOrders">Total orders submitted in our store: <span>{{totalAmountOfOrders}}</span></p>
+
+    <div *ngIf="userFetchedDetails" class="notifications" [ngClass]="{'notificationsCaseContinue': cartStatus === 'Continue Shopping'}">
+      <ul style="font-size: 100%; text-indent: 0px;" *ngIf="cartCreationDate || orderCreationDate">
+        <span style="font-size:110%;text-decoration: underline;text-indent: -25px;"> Notifications:</span>
+        <li *ngIf="cartCreationDate">You have an open cart from <span>{{cartCreationDate}}</span></li>
+        <li *ngIf="orderCreationDate">Your last purchase was on <span>{{orderCreationDate}}</span></li>
+      </ul>
+      <div class="wrapper" style="width: max-content; margin-left: -18px;">
+        <div class="button" (click)="openShop()" style="margin-top:25px;transform: translate(-12px) scale(0.8);">
+          <span class="button__mask"></span>
+          <span class="button__text" style="letter-spacing: 5px;font-family:serif;">{{cartStatus}}</span>
+          <span class="button__text button__text--bis"
+            style="letter-spacing: 5px;font-family:serif;">{{cartStatus}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
