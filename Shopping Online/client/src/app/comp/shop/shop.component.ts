@@ -317,6 +317,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
     if (this.user.role === "admin") {
       if (!this.AdminEditMode) {
@@ -363,5 +364,6 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.userService.shopCompActive = false;
+    (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "auto";
   }
 }
