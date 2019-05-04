@@ -33,6 +33,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   AdminEditMode: boolean = false;
   prodID: string;
   selectedProdToEdit: string;
+  adminAddmode: boolean = false;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -124,6 +125,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   reassignType() {
+    debugger;
     var prodType;
     if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Dairy") {
       prodType = "dairy"
@@ -139,6 +141,10 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
     if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Eggs & Meat") {
       prodType = "meat"
+    }
+    if(this.adminAddmode){
+      this.addProduct.reset();
+      this.adminAddmode = false;
     }
     document.getElementById(prodType).click();
   }
@@ -309,6 +315,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   Boss_AddProduct() {
+    debugger;
     this.submitted = true;
     if (this.addProduct.valid) {
       this.shopService.adminAdd({
@@ -319,8 +326,9 @@ export class ShopComponent implements OnInit, OnDestroy {
         url: this.addProduct.controls.addProdImg.value
       }).subscribe(data => {
         if (data.title === this.addProduct.controls.addProdTitle.value) {
+          this.adminAddmode = true;
           this.submitted = false;
-          this.addProduct.reset();
+          this.AdminEditMode = true;
           this.ngOnInit();
         }
       });
@@ -329,6 +337,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    debugger;
     this.onResize();
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
