@@ -78,14 +78,16 @@
   <div id="regContofCont" *ngIf="!alreadyRegistered">
     <div *ngIf="userFetchedDetails" class="cont"
       style="transform: translate(-30px);font-weight: bold; letter-spacing: 4px;">
-      Welcome <font style="text-transform: capitalize;">{{userFetchedDetails.userName}}</font>!<br />
-      You are now logged in.<br />
-      Please click on the red button<br />
-      to enter the shop<br />
-      <font style="position: relative; top: -5px; left: 15px;"> or <button
-          style="font-size: 12.5px; position: relative; left: -15px; top: -1px;" class="btn btn-link"
-          (click)="logout()">log out</button></font>
-    </div>
+      <img src="../../../assets/images/CachetFB-V.png" alt="Signed in as {{userFetchedDetails.userName}}"
+      class="stick"><br />
+    Welcome <span style="text-transform: capitalize;">{{userFetchedDetails.userName}}</span>!<br />
+    You are now logged in.<br />
+    Please click on the red button<br />
+    to enter the shop<br />
+    <!-- <span style="position: relative; top: -5px; left: 15px;"> or <button
+        style="font-size: 12.5px; position: relative; left: -15px; top: -1px;" class="btn btn-link"
+        (click)="logout()">log out</button></span> -->
+  </div>
     <div class="cont" *ngIf="!userFetchedDetails">
       <!-- <div *ngFor="let nogo of invalid">
             {{nogo}}

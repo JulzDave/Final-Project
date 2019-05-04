@@ -118,7 +118,7 @@
                         <tr *ngIf="myCart?.length == '0' && firstUse">
                             <td>
                                 <p class="sidebarMsg">
-                                    Welcome {{user.firstName}}.<br />
+                                    Welcome <span style="text-transform: capitalize;">{{user.firstName}}</span>.<br />
                                     For your convenience,<br />
                                     chosen products will be<br />
                                     displayed in this section.<br />
@@ -189,7 +189,7 @@
                     style="cursor:default;font-family: lobster; position: absolute; margin-top: -31px; text-decoration: underline;">
                     Total Payment: <span style="color:gold;">${{orderCost.toFixed(2)}}</span></span>
                 <li>
-                    <button (click)="goToOrder()" style="margin-bottom:5px;" class="sidebarBtn" mat-flat-button>Checkout
+                    <button (click)="goToOrder()" style="margin-bottom:5px; margin-top: 15px;" class="sidebarBtn" mat-flat-button>Checkout
                         Now <mat-icon>shopping_cart</mat-icon></button>
                 </li>
                 <li>
@@ -234,11 +234,11 @@
 
 
     <div class="shopProducts">
-        <div *ngIf="category?.length === 0" style="color:beige;font-size:20px;">No matches found...</div>
-        <mat-grid-list cols="{{cols}}" rowHeight="750px" gutterSize="10px" (window:resize)="onResize()">
+        <div *ngIf="category?.length === 0" style="color:beige;font-size:20px;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 3px;">No matches found...</div>
+        <!-- <mat-grid-list cols="{{cols}}" rowHeight="750px" gutterSize="10px" (window:resize)="onResize()">
             <mat-grid-tile *ngFor="let product of category">
 
-                <mat-card>
+                <mat-card >
                     <img id="{{product._id}}" mat-card-image src="{{product.url}}" alt="{{product.title}}">
                     <mat-card-header>
                         <mat-card-title>{{product.title}}</mat-card-title>
@@ -258,6 +258,27 @@
                     </mat-card-actions>
                 </mat-card>
             </mat-grid-tile>
-        </mat-grid-list>
+        </mat-grid-list> -->
+        <div (window:resize)="onResize()" class="card-container">
+                <mat-card *ngFor="let product of category">
+                    <img id="{{product._id}}" mat-card-image src="{{product.url}}" alt="{{product.title}}">
+                    <mat-card-header>
+                        <mat-card-title>{{product.title}}</mat-card-title>
+                        <mat-card-subtitle class="pPrice">Price: ${{product.price}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p style="margin-left: 10px;">{{product.description}}</p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button *ngIf="user.role === 'user'" mat-raised-button color="primary" class="red"
+                            (click)="openRepDialog($event)">Add
+                            <mat-icon style="pointer-events: none;">add_shopping_cart</mat-icon></button>
+                        <button *ngIf="user.role === 'admin'" mat-raised-button color="primary" class="red"
+                            [ngClass]="{'inspected':AdminEditMode && prodID == product._id}"
+                            (click)="chooseProdToEdit($event)">Edit
+                            <mat-icon style="pointer-events: none;">edit</mat-icon></button>
+                    </mat-card-actions>
+                </mat-card>
+        </div>
     </div>
 </div>

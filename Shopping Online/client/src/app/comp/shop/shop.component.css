@@ -274,11 +274,38 @@ background: #d00000!important;
 }
 
 .mat-card:not([class*=mat-elevation-z]) {
-    box-shadow: none;
+    /* box-shadow: none;
     border: 5px solid #212121;
     border-bottom: 20px solid #212121;
     background-color: beige;
-    width: 22rem;
+    width: 22rem; */
+
+    box-shadow: none;
+    
+    /* border-bottom: 20px solid #212121; */
+    background-color: beige;
+    width: 100%;
+    height: fit-content;
+    /* float: left; */
+    /* columns: 2; */
+    margin: 0 0 20px;
+    contain: content;
+    display: block;
+    overflow: hidden;
+    page-break-inside: avoid;
+    border-radius: 5px;
+    float:left;
+}
+
+.card-container{
+    columns: 3;
+    display: block; 
+    column-gap: 10px;
+    direction: ltr;
+}
+
+::ng-deep .mat-button-wrapper{
+    pointer-events: none;
 }
 
 .navbarText{
@@ -353,10 +380,14 @@ background: #d00000!important;
     letter-spacing: 2px;
     opacity: 1;
     transition: opacity 1s;
+    background: rgb(0,0,65);
+    color: white;
+    border: 2px outset gold;
+    opacity: 0.9;
 }
 
 .sidebarBtn:hover{
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .disabler {
@@ -571,7 +602,7 @@ p.sidebarMsg {
 
 .barProdCont{
     position: relative;
-    right: 4px;
+    right: 10px;
 }
 
 .jbCollapse{
@@ -630,6 +661,7 @@ a[aria-expanded="true"] {
     letter-spacing: 2px;
     font-style: italic;
     -webkit-text-stroke: 0.2px black;
+    direction: ltr;
 }
 /* ---------------------------------------------------
     MEDIAQUERIES

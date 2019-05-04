@@ -58,7 +58,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
 
-      this.cols = parseFloat(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 265).toString())
+      this.onResize()
     }, 600);
 
   }
@@ -72,7 +72,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(RepDialogComponent, {
       width: '250px',
       data: {
-        product: ev.target.parentElement.parentElement.parentElement,
+        product: ev.target.parentElement.parentElement,
         user: this.user
       }
     });
@@ -86,9 +86,10 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   chooseProdToEdit(ev): void {
+    debugger;
     this.submitted = false;
     this.AdminEditMode = true
-    this.prodID = ev.target.parentElement.parentElement.parentElement.getElementsByTagName("img")[0].id;
+    this.prodID = ev.target.parentElement.parentElement.children[0].id;
     this.adminModeSidebar();
 
     this.shopService.adminSearchProduct(this.prodID).subscribe(data => {
@@ -204,7 +205,11 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   onResize() {
-    this.cols = parseFloat(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 265).toString())
+    this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 230).toString());
+    if(this.cols === 0){
+      this.cols = 1
+    }
+    (document.getElementsByClassName("card-container") as HTMLCollectionOf<HTMLDivElement>)[0].style.columns = this.cols.toString();
 
     if (document.getElementsByClassName("wrapper")[0].clientWidth < 100) {
      setTimeout(() => {
@@ -324,6 +329,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.onResize();
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
     if (this.user.role === "admin") {
@@ -340,6 +346,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.userService.shopCompActive = true;
     }, 100);
+      
     this.userService.categories().subscribe(assignCategory => {
       this.currentCategory = assignCategory.map((t) => t)[0]._id;
 
@@ -348,7 +355,6 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.category = this.products.filter((categ) => { return categ.type === this.currentCategory });
       });
     });
-    this.cols = parseFloat(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 265).toString());
 
     this.shopService.searchUserCart(this.user._id).subscribe(data => {
       this.myCart = data
