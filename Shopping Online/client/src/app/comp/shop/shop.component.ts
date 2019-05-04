@@ -205,6 +205,13 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   onResize() {
     this.cols = parseFloat(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 265).toString())
+
+    if (document.getElementsByClassName("wrapper")[0].clientWidth < 100) {
+     setTimeout(() => {
+       
+       document.getElementById("sidebar").style.display = "flex";
+      }, 100);
+    }
   }
 
   getUserProducts() {
