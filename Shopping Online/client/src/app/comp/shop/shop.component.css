@@ -260,6 +260,7 @@ background: #d00000!important;
     text-shadow: -7px 6px 7px darkslategrey;
     font-weight: bold;
     pointer-events: none;
+    user-select: none;
 }
 
 .first{
@@ -300,7 +301,7 @@ background: #d00000!important;
 .card-container{
     columns: 3;
     display: block; 
-    column-gap: 10px;
+    column-gap: 20px;
     direction: ltr;
 }
 
