@@ -9,7 +9,11 @@ An e-commerce web app using MEAN Stack (Node.js, Angular 7, Express.js & MongoDb
 - Import the attached MongoDB collections to the database  
 
 ### Try it locally
-Make sure that MongoDB is running on your machine at port `27017`, port `3000` is available to run node.js server and port `4200` is available to run the Angular frontend. in the client folder, execute the following terminal commands:
+- Make sure that MongoDB is running on your machine at port `27017`.
+- port `3000` is available to run node.js server.
+- and port `4200` is available to run the Angular frontend. 
+
+in the client folder, execute the following terminal commands:
 ```
     > npm install
     > npm start
