@@ -21,14 +21,14 @@ export class RepDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private shopService: ShopService, private userService: UserService) { }
 
-  plusP() {
+  plusP(): void {
     this.amount = this.amount + 1;
     this.totProdPrice = parseFloat(this.totProdPrice) + parseFloat(this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1]);
     this.totProdPrice = this.totProdPrice.toString().substr(0, 6);
     
   }
 
-  minusP() {
+  minusP(): void {
     if (parseFloat(this.totProdPrice) - parseFloat(this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1]) > 0) {
       this.amount = this.amount - 1;
       this.totProdPrice = parseFloat(this.totProdPrice) - parseFloat(this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1]);
@@ -36,9 +36,8 @@ export class RepDialogComponent implements OnInit {
     }
   }
 
-  addProduct() {
+  addProduct(): void {
     this.userService.searchCart(this.user._id).subscribe(data => {
-      debugger;
       if (!data) {
         this.shopService.createCart(this.user._id).subscribe(data2 => {
 
@@ -66,15 +65,13 @@ export class RepDialogComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.chosenProduct = this.data.product;
     this.amount = 1;
-    debugger;
     this.totProdPrice = this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1];
     this.chosenProductID = this.data.product.getElementsByTagName("img")[0].id
     this.user = this.data.user;
     user = this.data.user;
-    debugger;
   }
 }
 

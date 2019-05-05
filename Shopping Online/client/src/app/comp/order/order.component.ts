@@ -31,7 +31,7 @@ export class OrderComponent implements OnInit {
   constructor(private shopService: ShopService, private router: Router) { }
 
 
-  creditCardValidation() {
+  creditCardValidation(): void {
     let isMasterCard = /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/;
     let isVisa = /^4[0-9]{12}(?:[0-9]{3})?$/;
     let isAmericanExpress = /^3[47][0-9]{13}$/;
@@ -101,7 +101,7 @@ export class OrderComponent implements OnInit {
     }
   }
 
-  cvvLength(ev) {
+  cvvLength(ev:string): void {
     if (ev.length > 3) {
       this.orderDetails.controls.cvv.setValue(ev.substr(0, 3));
     }
@@ -109,7 +109,7 @@ export class OrderComponent implements OnInit {
 
 
 
-  return() {
+  return(): void {
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflowY = "auto";
     this.router.navigate(['home']);
   }
@@ -131,7 +131,7 @@ export class OrderComponent implements OnInit {
 
   get f4(): any { return this.orderDetails.controls; }
 
-  autofiller(ev) {
+  autofiller(ev:any): any {
     if (ev.target.placeholder == "City") {
       return this.orderDetails.controls.city.setValue(this.user.address.city);
     }
@@ -146,7 +146,7 @@ export class OrderComponent implements OnInit {
     }
   }
 
-  orderAction() {
+  orderAction(): void {
     this.submitted = true;
     if (this.f4.deliveryDate.value && this.f4.expirationDate.value && this.orderDetails.valid && this.matIcon === "check") {
       (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflowY = "hidden";
@@ -159,16 +159,12 @@ export class OrderComponent implements OnInit {
             this.shopService.lockCartProd({ cartID: data.cartID, generated: data.generated }).subscribe(data => {
               this.shopService.lockCart({ userID: this.user._id, generated: this.orderGeneration }).subscribe(data2 => { })
             })
-            // {cartID: data.cartID, userID: data.userID, generated: data.generated}
-            // client in carts
-            // cartID in cartproducts
           }
         });
     }
-
   }
 
-  computeOrderDeliveryOverload() {
+  computeOrderDeliveryOverload(): void {
     this.shopService.getOrders().subscribe(data => {
       this.totalAmountOfOrders = data.length
       if (this.totalAmountOfOrders > 0) {
@@ -184,36 +180,28 @@ export class OrderComponent implements OnInit {
           }
           else { i++ }
         }
-        // sss = data.map(item => (item.scheduled.split(":")[0].substr(0,15) )).sort().reverse();
-        // for(let i = 0; i<)
-        // console.log(sss.filter(item => item == sss.filter(item => item)[0]));
         this.allDupedDates = this.allDupedDates.map((item) => new Date(item).getTime());
-
-        console.log(this.allDupedDates.map(d => d.valueOf()));
-
-
       }
     });
   }
 
   myFilter = (d: Date): boolean => {
-    const day = d.getDay();
-
+    const day:any = d.getDay();
     return (!this.allDupedDates.includes(d.valueOf())) && day !== 6;
   }
 
-  downloadPDF() {
+  downloadPDF(): void {
 
-    var order = this.order;
-    var orderCost = this.orderCost;
-    var cardType = this.cardType;
-    var user = this.user;
-    var userForm = this.f4;
-    var finishedOrder = this.finishedOrder
+    var order:any = this.order;
+    var orderCost:number = this.orderCost;
+    var cardType: string = this.cardType;
+    var user: any = this.user;
+    var userForm: any = this.f4;
+    var finishedOrder: any = this.finishedOrder
 
-    var generateData = function (amount) {
-      var result = [];
-      var data =
+    var generateData = function (amount): any[] {
+      var result:any[] = [];
+      var data:any =
       {
         Item: "",
         Amount: "",
@@ -221,7 +209,7 @@ export class OrderComponent implements OnInit {
         Summed_price: "",
 
       };
-      for (var i = 0; i < order.length; i += 1) {
+      for (var i:number = 0; i < order.length; i += 1) {
         data.Item = order[i][1].title;
         data.Amount = order[i][0].amount.toString();
         data.Unit_price = "$" + order[i][1].price.toString();
@@ -231,7 +219,7 @@ export class OrderComponent implements OnInit {
       return result;
     };
 
-    function createHeaders(keys) {
+    function createHeaders(keys:any): any[] {
       var result = [];
       for (var i = 0; i < keys.length; i += 1) {
         result.push({
@@ -247,11 +235,11 @@ export class OrderComponent implements OnInit {
       return result;
     }
 
-    var generateData2 = function (amount) {
-      var result = [];
-      var datenow = new Date();
-      var today = datenow.toString().split(":")[0].substr(0, 15);
-      var data =
+    var generateData2 = function (amount:number): any[] {
+      var result:any[] = [];
+      var datenow:Date = new Date();
+      var today:string = datenow.toString().split(":")[0].substr(0, 15);
+      var data:any =
       {
         id: user._id,
         Date: today,
@@ -259,7 +247,7 @@ export class OrderComponent implements OnInit {
         Card_type: cardType,
         Order_price: "$" + orderCost
       };
-      for (var i = 0; i < amount; i += 1) {
+      for (var i:number = 0; i < amount; i += 1) {
 
         data.id = (i + 1).toString();
         result.push(Object.assign({}, data));
@@ -267,9 +255,9 @@ export class OrderComponent implements OnInit {
       return result;
     };
 
-    function createHeaders2(keys) {
-      var result = [];
-      for (var i = 0; i < keys.length; i += 1) {
+    function createHeaders2(keys): any[] {
+      var result: any[] = [];
+      for (var i: number = 0; i < keys.length; i += 1) {
         result.push({
           'id': keys[i],
           'name': keys[i],
@@ -281,9 +269,9 @@ export class OrderComponent implements OnInit {
       }
       return result;
     }
-    var generateData3 = function (amount) {
-      var result = [];
-      var data =
+    var generateData3 = function (amount): any[] {
+      var result: any[] = [];
+      var data: any =
       {
         id: user._id,
         First_name: user.firstName,
@@ -300,7 +288,7 @@ export class OrderComponent implements OnInit {
       return result;
     };
 
-    function createHeaders3(keys) {
+    function createHeaders3(keys): any[] {
       var result = [];
       for (var i = 0; i < keys.length; i += 1) {
         result.push({
@@ -315,11 +303,11 @@ export class OrderComponent implements OnInit {
       return result;
     }
 
-    var headers = createHeaders(["Item", "Amount", "Unit_price", "Summed_price",]);
-    var headers2 = createHeaders2(["Date", "Card_number", "Card_type", "Order_price"]);
-    var headers3 = createHeaders3(["First_name", "Last_name", "Purchase_order_num", "Receipt_reference_num"]);
+    var headers: any = createHeaders(["Item", "Amount", "Unit_price", "Summed_price",]);
+    var headers2: any = createHeaders2(["Date", "Card_number", "Card_type", "Order_price"]);
+    var headers3: any = createHeaders3(["First_name", "Last_name", "Purchase_order_num", "Receipt_reference_num"]);
 
-    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: 'portrait' });
+    var doc:jsPDF = new jsPDF({ putOnlyUsedFonts: true, orientation: 'portrait' });
     doc.setFont("times");
     doc.setFontStyle("normal");
     doc.addImage('data:image/png;base64,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', 'JPEG', 0, 5, 250, 15);
@@ -327,7 +315,6 @@ export class OrderComponent implements OnInit {
     doc.line(75, 33, 136, 33);
     doc.table(17, 40, generateData(100), headers, { autoSize: false });
     let finalY = doc.lastCellPos.y + doc.lastCellPos.h;
-    console.log(finalY)
     doc.text('Total VAT liability:', 20, finalY + 30);
     doc.text("$" + (orderCost - (orderCost * 0.17)).toFixed(2).toString(), 55, finalY + 30);
     doc.text('Plus VAT of 17%:', 20, finalY + 40);
@@ -349,25 +336,24 @@ export class OrderComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.order = this.shopService.order;
-    debugger;
     this.orderCost = this.shopService.orderCost;
     this.user = this.shopService.user;
     this.myCart = this.shopService.cart;
 
-    var someDate = new Date();
+    var someDate:Date = new Date();
 
     someDate.setDate(someDate.getDate() + 7);
-    var dd = someDate.getDate();
-    var mm = someDate.getMonth();
-    var y = someDate.getFullYear();
+    var dd: any = someDate.getDate();
+    var mm: any = someDate.getMonth();
+    var y: any = someDate.getFullYear();
     this.minExpDate = new Date(y, mm, dd);
-    var minDeliveryDate = new Date();
+    var minDeliveryDate: Date = new Date();
     minDeliveryDate.setDate(minDeliveryDate.getDate() + 1);
-    var dd2 = minDeliveryDate.getDate();
-    var mm2 = minDeliveryDate.getMonth();
-    var y2 = minDeliveryDate.getFullYear();
+    var dd2: any = minDeliveryDate.getDate();
+    var mm2: any = minDeliveryDate.getMonth();
+    var y2: any = minDeliveryDate.getFullYear();
     this.minDeliveryDate = new Date(y2, mm2, dd2);
     this.computeOrderDeliveryOverload();
 

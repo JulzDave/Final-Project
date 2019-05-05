@@ -37,13 +37,13 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
-  adminModeSidebar() {
+  adminModeSidebar(): void {
     if (this.sidebarIsOpen) {
       this.toggleSidebar()
     }
   }
 
-  toggleSidebar() {
+  toggleSidebar(): void {
 
     this.sidebarIsOpen = !this.sidebarIsOpen;
 
@@ -57,20 +57,19 @@ export class ShopComponent implements OnInit, OnDestroy {
       }
     }
 
-    setTimeout(() => {
+    setTimeout((): void => {
 
       this.onResize()
     }, 600);
 
   }
 
-  collapser() {
+  collapser(): void {
     document.getElementById('homeSubmenu').classList.toggle('jbCollapse');
   }
 
-  openRepDialog(ev) {
-    debugger;
-    const dialogRef = this.dialog.open(RepDialogComponent, {
+  openRepDialog(ev: any): void {
+    const dialogRef: any = this.dialog.open(RepDialogComponent, {
       width: '250px',
       data: {
         product: ev.target.parentElement.parentElement,
@@ -86,15 +85,13 @@ export class ShopComponent implements OnInit, OnDestroy {
     });
   }
 
-  chooseProdToEdit(ev): void {
-    debugger;
+  chooseProdToEdit(ev:any): void {
     this.submitted = false;
     this.AdminEditMode = true
     this.prodID = ev.target.parentElement.parentElement.children[0].id;
     this.adminModeSidebar();
 
     this.shopService.adminSearchProduct(this.prodID).subscribe(data => {
-      debugger;
       if (data[0]._id == this.prodID) {
         this.f5.addProdTitle.setValue(data[0].title);
         this.f5.addProdDescription.setValue(data[0].description);
@@ -105,7 +102,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     })
   }
 
-  boss_editProduct() {
+  boss_editProduct(): void {
     this.submitted = true;
     if (this.addProduct.valid) {
       this.shopService.adminEditProduct({
@@ -116,7 +113,6 @@ export class ShopComponent implements OnInit, OnDestroy {
         url: this.f5.addProdImg.value,
         price: this.f5.addProdPrice.value
       }).subscribe(data => {
-        debugger;
         if (this.prodID === data._id) {
           this.ngOnInit();
         }
@@ -124,9 +120,8 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
   }
 
-  reassignType() {
-    debugger;
-    var prodType;
+  reassignType(): void {
+    var prodType: string;
     if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Dairy") {
       prodType = "dairy"
     }
@@ -149,7 +144,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     document.getElementById(prodType).click();
   }
 
-  Boss_goToAddNewProduct() {
+  Boss_goToAddNewProduct(): void {
     this.submitted = false;
     this.AdminEditMode = false;
     this.addProduct.reset();
@@ -167,26 +162,25 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   });
 
-  activator(e) {
-    debugger;
+  activator(e): void {
 
-    for (let i = 0; i < document.getElementsByClassName('navCat').length; i++) {
+    for (let i:number = 0; i < document.getElementsByClassName('navCat').length; i++) {
       document.getElementsByClassName('navCat')[i].classList.remove("activateCategory");
     }
     e.target.classList.add("activateCategory");
 
-    for (let i = 0; i < document.getElementsByClassName('nav-link').length; i++) {
+    for (let i:number = 0; i < document.getElementsByClassName('nav-link').length; i++) {
       document.getElementsByClassName('nav-link')[i].classList.remove("activateCategory");
     }
     e.target.classList.add("activateCategory");
 
 
     this.userService.categories().subscribe(assignCategory => {
-      this.currentCategory = assignCategory.map((t) => t).filter((cat) => { return cat.category === e.target.id })[0]._id
+      this.currentCategory = assignCategory.map((t: any): void => t).filter((cat:any): boolean => { return cat.category === e.target.id })[0]._id
 
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
-        this.category = this.products.filter((categ) => { return categ.type === this.currentCategory });
+        this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
 
       })
     })
@@ -194,23 +188,22 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   }
 
-  searchProduct() {
+  searchProduct(): void {
 
-    var searchInp = this.searchValue
-    this.userService.getProducts().subscribe((data) => {
+    this.userService.getProducts().subscribe((data:any):void => {
       data.map(data => data.title = data.title.toLowerCase());
       this.category = data.filter((product) => product.title.includes(this.searchValue.toLowerCase()));
     });
 
-    for (let i = 0; i < document.getElementsByClassName('navCat').length; i++) {
+    for (let i:number = 0; i < document.getElementsByClassName('navCat').length; i++) {
       document.getElementsByClassName('navCat')[i].classList.remove("activateCategory");
     }
-    for (let i = 0; i < document.getElementsByClassName('nav-link').length; i++) {
+    for (let i:number = 0; i < document.getElementsByClassName('nav-link').length; i++) {
       document.getElementsByClassName('nav-link')[i].classList.remove("activateCategory");
     }
   }
 
-  onResize() {
+  onResize(): void {
     this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 230).toString());
     if(this.cols === 0){
       this.cols = 1
@@ -225,33 +218,29 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
   }
 
-  getUserProducts() {
+  getUserProducts(): any {
 
     this.shopService.searchUserCart(this.user._id).subscribe(data => {
       this.myCart = data
       if (data.length === 0) {
         return this.getUserProducts();
       }
-      this.shopService.searchUserProducts(data[0]._id).subscribe(data2 => {
+      this.userService.searchUserProducts(data[0]._id).subscribe(data2 => {
         this.cartItems = data2
-        debugger;
         this.shopService.displayUserProducts(data2).subscribe(data3 => {
           this.myProducts = [];
           this.orderCost = 0;
           this.firstUse = false;
-          for (let i = 0; i < this.cartItems.length; i++) {
+          for (let i:number = 0; i < this.cartItems.length; i++) {
             this.myProducts.push([this.cartItems[i], data3.userProd[i]])
             this.orderCost += this.myProducts[i][0].totalPrice
           }
         });
-        // for(let i = 0 ; i < this.myProducts.length ; i++){
-        // }
       });
     });
   }
 
-
-  delProd(ev) {
+  delProd(ev:any):void | undefined {
     this.shopService.deleteProd({ product: ev.target.id, cart: this.myCart[0]._id }).subscribe(data => { });
     this.myProducts = [];
 
@@ -264,12 +253,12 @@ export class ShopComponent implements OnInit, OnDestroy {
         if (data.length === 0) {
           return;
         }
-        this.shopService.searchUserProducts(data[0]._id).subscribe(data2 => {
+        this.userService.searchUserProducts(data[0]._id).subscribe(data2 => {
           this.cartItems = data2
           this.shopService.displayUserProducts(data2).subscribe(data3 => {
             this.myProducts = [];
             this.firstUse = false;
-            for (let i = 0; i < this.cartItems.length; i++) {
+            for (let i:number = 0; i < this.cartItems.length; i++) {
               this.myProducts.push([this.cartItems[i], data3.userProd[i]])
               this.orderCost += this.myProducts[i][0].totalPrice
             }
@@ -282,7 +271,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
   }
 
-  discardCart() {
+  discardCart(): void | undefined {
     if (confirm("are you sure? this will delete all of your cart's content")) {
       this.shopService.discardCart(this.myCart[0]._id).subscribe(data => {
       });
@@ -293,12 +282,12 @@ export class ShopComponent implements OnInit, OnDestroy {
           this.orderCost = 0;
           return;
         }
-        this.shopService.searchUserProducts(data[0]._id).subscribe(data2 => {
+        this.userService.searchUserProducts(data[0]._id).subscribe(data2 => {
           this.cartItems = data2
           this.shopService.displayUserProducts(data2).subscribe(data3 => {
             this.myProducts = [];
             this.firstUse = false;
-            for (let i = 0; i < this.cartItems.length; i++) {
+            for (let i:number = 0; i < this.cartItems.length; i++) {
               this.myProducts.push([this.cartItems[i], data3.userProd[i]])
               this.orderCost += this.myProducts[i][0].totalPrice
             }
@@ -308,14 +297,13 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToOrder() {
+  goToOrder(): void {
 
     this.shopService.goToOrder({ myProducts: this.myProducts, orderCost: this.orderCost.toFixed(2), user: this.user, cart: this.myCart });
     this.router.navigate(['order']);
   }
 
-  Boss_AddProduct() {
-    debugger;
+  Boss_AddProduct(): void {
     this.submitted = true;
     if (this.addProduct.valid) {
       this.shopService.adminAdd({
@@ -336,8 +324,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnInit() {
-    debugger;
+  ngOnInit(): void {
     this.onResize();
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
@@ -347,21 +334,21 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.AdminEditMode = false;
       }
       else {
-        setTimeout(() => {
+        setTimeout(():void => {
           this.reassignType();
         }, 100);
       }
     }
-    setTimeout(() => {
+    setTimeout((): void => {
       this.userService.shopCompActive = true;
     }, 100);
       
     this.userService.categories().subscribe(assignCategory => {
-      this.currentCategory = assignCategory.map((t) => t)[0]._id;
+      this.currentCategory = assignCategory.map((t:any): void => t)[0]._id;
 
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
-        this.category = this.products.filter((categ) => { return categ.type === this.currentCategory });
+        this.category = this.products.filter((categ:any):boolean => { return categ.type === this.currentCategory });
       });
     });
 
@@ -370,21 +357,20 @@ export class ShopComponent implements OnInit, OnDestroy {
       if (data.length === 0) {
         return;
       }
-      this.shopService.searchUserProducts(data[0]._id).subscribe(data2 => {
+      this.userService.searchUserProducts(data[0]._id).subscribe(data2 => {
         this.cartItems = data2
         this.shopService.displayUserProducts(data2).subscribe(data3 => {
           this.myProducts = [];
           this.firstUse = false;
-          for (let i = 0; i < this.cartItems.length; i++) {
+          for (let i:number = 0; i < this.cartItems.length; i++) {
             this.myProducts.push([this.cartItems[i], data3.userProd[i]])
             this.orderCost += this.myProducts[i][0].totalPrice
           }
-          console.log(this.myProducts)
         });
       });
     });
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.userService.shopCompActive = false;
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "auto";
   }

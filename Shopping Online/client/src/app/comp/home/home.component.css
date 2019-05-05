@@ -46,7 +46,6 @@
     top: -33px;
     margin-left: -40px;
     animation: stick 0.5s 0.2s ease-in 1 forwards;
-    /* transform: scaleX(1); */
 }
 
 @keyframes stick{
@@ -273,7 +272,6 @@ table {
     }
     
     #loginCont {
-        /* margin-top: -180px; */
         padding-left: 31px;
     }
 

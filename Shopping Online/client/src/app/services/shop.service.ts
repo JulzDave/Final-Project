@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const httpOptions = {
+const httpOptions: any = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': 'my-auth-token'
@@ -15,10 +15,10 @@ const httpOptions = {
 })
 export class ShopService {
 
-  order:any;
-  orderCost:number;
-  user:any;
-  cart:any;
+  order: any;
+  orderCost: number;
+  user: any;
+  cart: any;
 
   constructor(private http: HttpClient) { }
 
@@ -30,14 +30,14 @@ export class ShopService {
   }
 
   insertToCart(ev: any): Observable<any> {
-    return this.http.get('/api/insertToCartMethod',{
+    return this.http.get('/api/insertToCartMethod', {
       params: {
-      cart: ev.cart,
-      chosenProductID: ev.chosenProductID,
-      amount: ev.amount,
-      totalPrice: ev.totalPrice,
-    }
-  });
+        cart: ev.cart,
+        chosenProductID: ev.chosenProductID,
+        amount: ev.amount,
+        totalPrice: ev.totalPrice,
+      }
+    });
   }
 
   searchUserCart(ev: any): Observable<any> {
@@ -47,40 +47,32 @@ export class ShopService {
       }
     });
   }
-  
-  searchUserProducts(ev: any): Observable<any> {
-    return this.http.get('/api/searchUserProducts', {
-      params: {
-        cartID: ev
-      }
-    });
-  }
-  
+
   displayUserProducts(ev: any): Observable<any> {
     return this.http.get('/api/displayUserProducts', {
       params: {
-        prod: ev.map((prod)=>{return prod.prodID})
+        prod: ev.map((prod) => { return prod.prodID })
       }
     });
   }
 
   deleteProd(id): Observable<any> {
-    return this.http.delete('/api/del/'+id.product, {
-      params:{
+    return this.http.delete('/api/del/' + id.product, {
+      params: {
         cartID: id.cart
       }
     });
   }
-  
-  deleteCart(cartID): Observable<any> {
-    return this.http.delete('/api/delCart/'+cartID);
+
+  deleteCart(cartID: string): Observable<any> {
+    return this.http.delete('/api/delCart/' + cartID);
   }
 
-  discardCart(cartID){
-    return this.http.delete('/api/discardCart/'+cartID);
+  discardCart(cartID: string) {
+    return this.http.delete('/api/discardCart/' + cartID);
   }
 
-  goToOrder(ev){
+  goToOrder(ev:any):void {
     this.order = ev.myProducts;
     this.orderCost = ev.orderCost;
     this.user = ev.user;
@@ -88,7 +80,6 @@ export class ShopService {
   }
 
   CreateNewOrder(ev: any): Observable<any> {
-    debugger;
     return this.http.post('/api/order', {
       userID: ev.myCart[0].client,
       cartID: ev.myCart[0]._id,
@@ -105,52 +96,51 @@ export class ShopService {
     }, httpOptions);
   }
 
-  lockCartProd(ev): Observable<any> {
+  lockCartProd(ev: any): Observable<any> {
     return this.http.put('/api/lockCartProd/', {
       cartID: ev.cartID,
       generated: ev.generated
     }, httpOptions);
   }
-  
-  lockCart(ev): Observable<any> {
+
+  lockCart(ev: any): Observable<any> {
     return this.http.put('/api/lockCart/', {
       userID: ev.userID,
       generated: ev.generated
     }, httpOptions);
   }
 
-  getOrders():Observable<any> {
+  getOrders(): Observable<any> {
     return this.http.get('/api/allOrders');
-}
+  }
 
-adminAdd(ev: any): Observable<any> {
-  debugger;
-  return this.http.post('/api/adminProduct', {
-    title: ev.title,
-    type: ev.type,
-    description: ev.description,
-    url: ev.url,
-    price: ev.price
-  }, httpOptions);
-}
+  adminAdd(ev: any): Observable<any> {
+    return this.http.post('/api/adminProduct', {
+      title: ev.title,
+      type: ev.type,
+      description: ev.description,
+      url: ev.url,
+      price: ev.price
+    }, httpOptions);
+  }
 
-adminSearchProduct(ev: string): Observable<any> {
-  return this.http.get('/api/adminProduct', {
-    params: {
-      prodID: ev
-    }
-  });
-}
+  adminSearchProduct(ev: string): Observable<any> {
+    return this.http.get('/api/adminProduct', {
+      params: {
+        prodID: ev
+      }
+    });
+  }
 
-adminEditProduct(ev:any): Observable<any> {
-  return this.http.put('/api/adminProduct/', {
-    prodID: ev.prodID,
-    title: ev.title,
-    type: ev.type,
-    description: ev.description,
-    url: ev.url,
-    price: ev.price
-  }, httpOptions);
-}
+  adminEditProduct(ev: any): Observable<any> {
+    return this.http.put('/api/adminProduct/', {
+      prodID: ev.prodID,
+      title: ev.title,
+      type: ev.type,
+      description: ev.description,
+      url: ev.url,
+      price: ev.price
+    }, httpOptions);
+  }
 
 }

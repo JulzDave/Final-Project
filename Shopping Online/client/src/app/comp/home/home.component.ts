@@ -29,8 +29,9 @@ export class HomeComponent implements OnInit {
   orderCreationDate: string;
   totalAmountOfProducts: number;
   totalAmountOfOrders: number = null;
+  openCartPrice: number = null;
 
-  isRegistered() {
+  isRegistered(): void {
     this.submitted = false;
     this.alreadyRegistered = !this.alreadyRegistered
   }
@@ -63,7 +64,7 @@ export class HomeComponent implements OnInit {
   get f2(): any { return this.registerForm_step2.controls; }
 
 
-  register() {
+  register(): void {
 
     this.submitted = true;
     if (this.reg_btn_val === "NEXT STEP") {
@@ -124,7 +125,6 @@ export class HomeComponent implements OnInit {
 
   login() {
     this.submitted = true;
-    debugger;
     if (!this.loginForm.valid) {
       return;
     }
@@ -136,7 +136,7 @@ export class HomeComponent implements OnInit {
         this.searchCart();
         if (data.role === "admin") {
           this.openShop()
-         }
+        }
       }
       else {
         this.loginErr = this.f3.password.value;
@@ -144,16 +144,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  searchCart() {
+  searchCart(): void {
     this.userService.searchCart(this.userFetchedDetails._id).subscribe(data => {
       this.cartCreationDate = null;
-      debugger;
       if (data) {
         this.cartStatus = "Continue Shopping";
         this.cartCreationDate = data.creationDate.split(" ")[1].
           concat(" " + data.creationDate.split(" ")[2].
             concat("th " + data.creationDate.split(" ")[3].
-              concat(" - " + data.creationDate.split(" ")[4])));
+              concat(" - " + data.creationDate.split(" ")[4])))
+
+        this.userService.searchUserProducts(data._id).subscribe(data2 => {
+          if (data2.length > 0) {
+            for (let i:number = 0; i < data2.length; i++) {
+              this.openCartPrice += data2[i]["totalPrice"]
+            }
+            this.openCartPrice = parseFloat(this.openCartPrice.toFixed(2));
+          }
+        })
       }
       else {
         this.cartStatus = "Start Shopping"
@@ -162,7 +170,7 @@ export class HomeComponent implements OnInit {
     this.searchOrder();
   }
 
-  searchOrder() {
+  searchOrder(): (void | number) {
     this.userService.searchOrder(this.userFetchedDetails._id).subscribe(data => {
       if (data.length === 0) {
         this.orderCreationDate = null;
@@ -190,7 +198,7 @@ export class HomeComponent implements OnInit {
 
   //----------------------Start Shopping--------------------
 
-  openShop() {
+  openShop(): void {
     this.router.navigate(['shop']);
     setTimeout(() => {
       this.router.navigate(['shop']);
@@ -200,7 +208,7 @@ export class HomeComponent implements OnInit {
   //----------------------End of shopping--------------------
 
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userService.checkSession().subscribe(data => {
       if (data.user) {
         this.userFetchedDetails = data.user;
@@ -208,8 +216,8 @@ export class HomeComponent implements OnInit {
       }
       if (this.userFetchedDetails) {
         this.userService.auth(this.userFetchedDetails)
-        if (data.user.role === "admin"){
-            this.openShop()
+        if (data.user.role === "admin") {
+          this.openShop()
         }
       };
     });

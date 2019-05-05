@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const httpOptions = {
+const httpOptions:any = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': 'my-auth-token'
@@ -28,14 +28,10 @@ export class UserService {
   register(ev: any): Observable<any> {
     
     return this.http.post('/api/register', ev,
-      // {
-      // chore_title: ev.description,
-      // assigned_to: ev.member
-      // }
       httpOptions);
   }
 
-  getAllUsers(ev): Observable<any> {
+  getAllUsers(ev: any): Observable<any> {
 
 
     return this.http.post('/api/allusers', {
@@ -52,7 +48,7 @@ export class UserService {
     return this.http.get('/api/prelog');
   }
 
-  auth(ev) {
+  auth(ev: any): void {
     this.user = ev;
     
     userName = ev.userName,
@@ -78,8 +74,15 @@ export class UserService {
   }
 
   logOut(): Observable<any> {
-    // this.user = false;
     return this.http.get('/api/logout');
+  }
+
+  searchUserProducts(ev: any): Observable<any> {
+    return this.http.get('/api/searchUserProducts', {
+      params: {
+        cartID: ev
+      }
+    });
   }
   
   
@@ -96,7 +99,6 @@ export class UserService {
 }
 
 searchCart(ev: string): Observable<any> {
-  debugger;
   return this.http.get('/api/searchCart', {
     params: {
       userID: ev
@@ -105,7 +107,6 @@ searchCart(ev: string): Observable<any> {
 }
 
 searchOrder(ev: string): Observable<any> {
-  debugger;
   return this.http.get('/api/searchOrder', {
     params: {
       userID: ev
@@ -113,9 +114,8 @@ searchOrder(ev: string): Observable<any> {
   });
 }
 
-downloadApiDoc(file:string){
-  var body = {filename:file};
-debugger;
+downloadApiDoc(file:string): Observable<any>{
+  var body:any = {filename:file};
   return this.http.post('/shopping/api', body,{
     responseType:'blob',
     headers: new HttpHeaders().append('Content-Type','application/json')
