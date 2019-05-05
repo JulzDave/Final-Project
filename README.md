@@ -1,7 +1,7 @@
 # MEAN stack e-commerce project
 ## Angular Node.js Express MongoDB
 
-#### An e-commerce web app using MEAN Stack (Node.js, Angular 7, Express.js & MongoDb)
+#### A general cuisine & home groceries shopping web app.
 
 ### Prerequisites
 - Make sure to have the Node package manager installed from https://nodejs.org/en/
