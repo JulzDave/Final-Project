@@ -34,6 +34,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   prodID: string;
   selectedProdToEdit: string;
   adminAddmode: boolean = false;
+  sidebarSmartphone:boolean;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -50,6 +51,10 @@ export class ShopComponent implements OnInit, OnDestroy {
     document.getElementById("sidebar").classList.toggle('active');
     if (window.innerWidth < 769) {
       if (document.getElementsByClassName("wrapper")[0].clientWidth > 100) {
+        this.sidebarSmartphone = true;
+        setTimeout(() => {
+          this.sidebarSmartphone = false;
+        }, 1000);
         document.getElementById("sidebar").style.display = "none";
       }
       else {
@@ -210,7 +215,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     }
     (document.getElementsByClassName("card-container") as HTMLCollectionOf<HTMLDivElement>)[0].style.columns = this.cols.toString();
 
-    if (document.getElementsByClassName("wrapper")[0].clientWidth < 100) {
+    if (document.getElementsByClassName("wrapper")[0].clientWidth < 100 && !this.sidebarSmartphone) {
      setTimeout(() => {
        
        document.getElementById("sidebar").style.display = "flex";

@@ -30,7 +30,7 @@
 }
 
 .navbar-brand:hover{
-    color:lightgrey;
+    color:gold;
 }
 
 .hamburger-icon{
@@ -41,7 +41,7 @@
 }
 
 .hamburger-icon:hover{
-    filter: invert(80%)
+    filter: invert(80%) sepia(100%) saturate(300%);
 }
 
 #routerCont{
