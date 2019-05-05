@@ -324,7 +324,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnInit(): void {
+  ngOnInit(): void | undefined{
     this.onResize();
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;

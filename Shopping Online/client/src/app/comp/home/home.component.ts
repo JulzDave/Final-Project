@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
   get f2(): any { return this.registerForm_step2.controls; }
 
 
-  register(): void {
+  register(): void | undefined {
 
     this.submitted = true;
     if (this.reg_btn_val === "NEXT STEP") {
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit {
     password: new FormControl(null, [Validators.required]),
   });
 
-  login() {
+  login():void | undefined {
     this.submitted = true;
     if (!this.loginForm.valid) {
       return;
