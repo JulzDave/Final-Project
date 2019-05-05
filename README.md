@@ -1,5 +1,5 @@
 # MEAN stack e-commerce project
-Angular Node.js Express MongoDB
+## Angular Node.js Express MongoDB
 
 An e-commerce web app using MEAN Stack (Node.js, Angular 7, Express.js & MongoDb)
 
