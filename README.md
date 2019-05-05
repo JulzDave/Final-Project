@@ -25,4 +25,4 @@ In the client folder, execute the following terminal commands:
 _Enter the app in http://localhost:4200_
 
 - To enter as an administrator, type both username and password "admin".
-- To enter as a user, type in username "julian" and password "awdawd" or register.
+- To enter as a user, type in username "julian" and password "awdawd" or simply register.
