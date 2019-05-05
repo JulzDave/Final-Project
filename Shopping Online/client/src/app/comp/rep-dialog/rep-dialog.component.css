@@ -7,7 +7,7 @@ p.diagPrice {
     border-radius: 35px;
     padding: 11px;
     font-size: 15px;
-    text-indent: -3px;
+    /* text-indent: -3px; */
     display: flex;
     justify-content: center;
     align-items: center;

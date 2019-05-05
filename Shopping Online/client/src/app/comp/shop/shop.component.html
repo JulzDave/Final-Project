@@ -141,9 +141,8 @@
                             <div *ngFor="let product of myProducts; let first = first" class="barProdCont">
                                 <mat-icon class="deleteProd" id="{{product[0]._id}}" (click)="delProd($event)">close
                                 </mat-icon>
-                                <td><img matTooltip="{{product[1].title}}" [matTooltipPosition]="'right'"
-                                        src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
-                                <td class="barProd" matTooltip="{{product[1].title}}" [matTooltipPosition]="'right'">
+                                <td><img src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
+                                <td [matTooltip]="product[1].title.length > '9' ? product[1].title : null" class="barProd" [matTooltipPosition]="'right'">
                                     <span style="font-size:18px;cursor: default"
                                         [ngClass]="{ 'longTitle': product[1].title.length > '9' }">
                                         {{product[1].title.substr(0, 9)}}</span>
