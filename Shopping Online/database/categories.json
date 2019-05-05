@@ -1,0 +1,5 @@
+{"_id":{"$oid":"5cab6fdbf0eb9b1b90c11de3"},"category":"dairy"}
+{"_id":{"$oid":"5cab7008240e0a1b90211b06"},"category":"vegetable"}
+{"_id":{"$oid":"5cab7022240e0a1b90211b07"},"category":"fruit"}
+{"_id":{"$oid":"5cab7041240e0a1b90211b08"},"category":"bakery"}
+{"_id":{"$oid":"5cab705b240e0a1b90211b09"},"category":"meat"}
