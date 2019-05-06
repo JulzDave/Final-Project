@@ -204,10 +204,12 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   searchProduct(): void {
-
+    this.category = [];
+    this.productViewLoad = true;
     this.userService.getProducts().subscribe((data: any): void => {
       data.map(data => data.title = data.title.toLowerCase());
       this.category = data.filter((product) => product.title.includes(this.searchValue.toLowerCase()));
+      this.productViewLoad = false;
     });
 
     for (let i: number = 0; i < document.getElementsByClassName('navCat').length; i++) {

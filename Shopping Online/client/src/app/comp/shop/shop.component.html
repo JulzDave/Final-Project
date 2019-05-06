@@ -16,15 +16,12 @@
 <div class="shopCont">
     <div class="wrapper">
         <div id="sidebar">
-
-            <ul class="list-unstyled components">
+                <ul class="list-unstyled components">
                 <mat-form-field class="example-form-field">
                     <input autocomplete="off" id="searchValue" class="sidebarInput" matInput type="text"
                         placeholder="Search" [(ngModel)]="searchValue" (keydown.enter)="searchProduct()">
-                    <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear">
-                        <mat-icon (click)="searchProduct()">search</mat-icon>
-                        <mat-icon (click)="searchValue=null">close</mat-icon>
-                    </button>
+                        <mat-icon *ngIf="searchValue" style="font-size: 20px; position: relative; top: 5px; left: -25px; cursor: pointer;"  matSuffix mat-icon-button (click)="searchProduct()">search</mat-icon>
+                        <mat-icon *ngIf="searchValue" style="font-size: 20px; position: absolute; top: 5px; cursor: pointer; left: 0px;;" matSuffix mat-icon-button (click)="searchValue=null">close</mat-icon>
                 </mat-form-field>
                 <div class="sidebar-header" *ngIf="user.role === 'user'">
                     <h4
@@ -206,11 +203,11 @@
                                 <mat-icon class="deleteProd" id="{{product[0]._id}}" (click)="delProd($event)">close
                                 </mat-icon>
                                 <td><img src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
-                                <td [matTooltip]="product[1].title.length > '9' ? product[1].title : null"
+                                <td [matTooltip]="product[1].title.length > '7' ? product[1].title : null"
                                     class="barProd" [matTooltipPosition]="'right'">
                                     <span style="font-size:18px;cursor: default"
-                                        [ngClass]="{ 'longTitle': product[1].title.length > '9' }">
-                                        {{product[1].title.substr(0, 9)}}</span>
+                                        [ngClass]="{ 'longTitle': product[1].title.length > '7' }">
+                                        {{product[1].title.substr(0, 7)}}</span>
                                     <span style="font-size:15px;cursor: default">&nbsp; - &times;{{product[0].amount}}
                                     </span><br />
                                     <span style="font-size:15px;cursor: default">Price:
