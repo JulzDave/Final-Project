@@ -1,3 +1,18 @@
+<div class="spinnerCont" *ngIf="!loadingComplete">
+    <img src="../../../assets/images/Sketch.png" alt="Waiting for the website to load">
+    <span class="loadCont">
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
+        </div>
+    </span>
+</div>
 <div class="shopCont">
     <div class="wrapper">
         <div id="sidebar">
@@ -115,7 +130,7 @@
                 </form>
                 <div class="prodInCart" *ngIf="user.role === 'user'">
                     <table>
-                        <tr *ngIf="myCart?.length == '0' && firstUse">
+                        <tr *ngIf="myCart?.length == '0' && firstUse && !cartRefresh">
                             <td>
                                 <p class="sidebarMsg">
                                     Welcome <span style="text-transform: capitalize;">{{user.firstName}}</span>.<br />
@@ -126,7 +141,7 @@
                                 </p>
                             </td>
                         </tr>
-                        <tr *ngIf="orderCost == '0' && !firstUse">
+                        <tr *ngIf="orderCost == '0' && !firstUse && !cartRefresh">
                             <td>
                                 <p class="sidebarMsg">
                                     Your cart is empty <mat-icon style="transform: translate(0px, 7px);">
@@ -137,18 +152,38 @@
                                 </p>
                             </td>
                         </tr>
+                        <tr *ngIf="cartRefresh">
+                            <td>
+                                <div class="lds-default">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </td>
+                        </tr>
                         <tr class="arrangeProdInCart">
                             <div *ngFor="let product of myProducts; let first = first" class="barProdCont">
                                 <mat-icon class="deleteProd" id="{{product[0]._id}}" (click)="delProd($event)">close
                                 </mat-icon>
                                 <td><img src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
-                                <td [matTooltip]="product[1].title.length > '9' ? product[1].title : null" class="barProd" [matTooltipPosition]="'right'">
+                                <td [matTooltip]="product[1].title.length > '9' ? product[1].title : null"
+                                    class="barProd" [matTooltipPosition]="'right'">
                                     <span style="font-size:18px;cursor: default"
                                         [ngClass]="{ 'longTitle': product[1].title.length > '9' }">
                                         {{product[1].title.substr(0, 9)}}</span>
                                     <span style="font-size:15px;cursor: default">&nbsp; - &times;{{product[0].amount}}
                                     </span><br />
-                                    <span style="font-size:15px;cursor: default">Price: ${{product[0].totalPrice.toFixed(2)}}
+                                    <span style="font-size:15px;cursor: default">Price:
+                                        ${{product[0].totalPrice.toFixed(2)}}
                                     </span>
                                 </td>
                                 <hr [ngClass]="{first: first }"
@@ -162,7 +197,8 @@
                 style="margin-top: 10px; margin-bottom: 0px;">
                 <li>
                     <button (click)="Boss_AddProduct()" mat-flat-button color="primary" class="sidebarBtn"
-                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">Add Product
+                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">Add
+                        Product
                         <mat-icon style="transform: translate(2px,-2px);">note_add</mat-icon> </button>
                 </li>
             </ul>
@@ -178,7 +214,8 @@
                 style="margin-top: -30px; margin-bottom: 0px;">
                 <li>
                     <button (click)="Boss_goToAddNewProduct()" mat-flat-button color="primary" class="sidebarBtn"
-                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">New product
+                        style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">New
+                        product
                         <mat-icon style="transform: translate(2px,-2px);">keyboard_return</mat-icon> </button>
                 </li>
             </ul>
@@ -188,12 +225,14 @@
                     style="cursor:default;font-family: lobster; position: absolute; margin-top: -31px; text-decoration: underline;">
                     Total Payment: <span style="color:gold;">${{orderCost.toFixed(2)}}</span></span>
                 <li>
-                    <button (click)="goToOrder()" style="margin-bottom:5px; margin-top: 15px;" class="sidebarBtn" mat-flat-button>Checkout
+                    <button (click)="goToOrder()" style="margin-bottom:5px; margin-top: 15px;" class="sidebarBtn"
+                        mat-flat-button>Checkout
                         Now <mat-icon>shopping_cart</mat-icon></button>
                 </li>
                 <li>
-                    <button style="color:white;background:black; margin-bottom: 80px;" color="primary" class="sidebarBtn" mat-flat-button
-                        (click)="discardCart()">Discard Cart <mat-icon>remove_shopping_cart</mat-icon></button>
+                    <button style="color:white;background:black; margin-bottom: 80px;" color="primary"
+                        class="sidebarBtn" mat-flat-button (click)="discardCart()">Discard Cart <mat-icon>
+                            remove_shopping_cart</mat-icon></button>
                 </li>
             </ul>
         </div>
@@ -233,27 +272,30 @@
 
 
     <div class="shopProducts">
-        <div *ngIf="category?.length === 0" style="color:beige;font-size:20px;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 3px;">No matches found...</div>
+        <div *ngIf="category?.length === 0"
+            style="color:beige;font-size:20px;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 3px;">No
+            matches found...</div>
         <div (window:resize)="onResize()" class="card-container">
-                <mat-card *ngFor="let product of category">
-                    <img id="{{product._id}}" mat-card-image src="{{product.url}}" alt="{{product.title}}">
-                    <mat-card-header>
-                        <mat-card-title>{{product.title}}</mat-card-title>
-                        <mat-card-subtitle class="pPrice">Price: ${{product.price}}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <p style="margin-right: 10px;">{{product.description}}</p>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button *ngIf="user.role === 'user'" mat-raised-button color="primary" class="red"
-                            (click)="openRepDialog($event)">Add
-                            <mat-icon style="pointer-events: none;">add_shopping_cart</mat-icon></button>
-                        <button *ngIf="user.role === 'admin'" mat-raised-button color="primary" class="red"
-                            [ngClass]="{'inspected':AdminEditMode && prodID == product._id}"
-                            (click)="chooseProdToEdit($event)">Edit
-                            <mat-icon style="pointer-events: none;">edit</mat-icon></button>
-                    </mat-card-actions>
-                </mat-card>
+            <mat-card *ngFor="let product of category">
+                <img id="{{product._id}}" mat-card-image src="{{product.url}}" alt="{{product.title}}"
+                    class="card-image">
+                <mat-card-header>
+                    <mat-card-title>{{product.title}}</mat-card-title>
+                    <mat-card-subtitle class="pPrice">Price: ${{product.price}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p style="margin-right: 10px;">{{product.description}}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button *ngIf="user.role === 'user'" mat-raised-button color="primary" class="red"
+                        (click)="openRepDialog($event)">Add
+                        <mat-icon style="pointer-events: none;">add_shopping_cart</mat-icon></button>
+                    <button *ngIf="user.role === 'admin'" mat-raised-button color="primary" class="red"
+                        [ngClass]="{'inspected':AdminEditMode && prodID == product._id}"
+                        (click)="chooseProdToEdit($event)">Edit
+                        <mat-icon style="pointer-events: none;">edit</mat-icon></button>
+                </mat-card-actions>
+            </mat-card>
         </div>
     </div>
 </div>

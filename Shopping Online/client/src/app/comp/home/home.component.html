@@ -1,6 +1,22 @@
+
+
 <div  class="homeCont" *ngIf="userFetchedDetails?.role === 'admin'"><div class="loader">Loading...</div></div>
 <div class="homeCont" *ngIf="userFetchedDetails?.role != 'admin'">
 
+  <div class="spinnerCont" *ngIf="!loadingComplete">
+    <span class="loadCont">
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
+        </div>
+    </span>
+  </div>
 
   <!-- Login -->
 

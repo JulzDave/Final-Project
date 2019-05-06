@@ -28,6 +28,8 @@ export class OrderComponent implements OnInit {
   minDeliveryDate: any;
   cardType: string;
   finishedOrder: any;
+  loadingComplete: boolean = false;
+
   constructor(private shopService: ShopService, private router: Router) { }
 
 
@@ -169,7 +171,7 @@ export class OrderComponent implements OnInit {
       this.totalAmountOfOrders = data.length
       if (this.totalAmountOfOrders > 0) {
         this.allOrderDates = data.map(item => (item.scheduled.split(":")[0].substr(0, 15))).sort().reverse()
-        var i = 0
+        var i:number = 0
 
         while (i < this.totalAmountOfOrders) {
           var duplicatedDateInstance = this.allOrderDates.filter(item => item == this.allOrderDates.filter(item => item)[i])
@@ -177,6 +179,9 @@ export class OrderComponent implements OnInit {
           if (duplicatedDateInstance.length > 2) {
             this.allDupedDates.push(duplicatedDateInstance[0])
             i += duplicatedDateInstance.length
+            if(i === this.totalAmountOfOrders){
+              this.loadingComplete = true
+            }
           }
           else { i++ }
         }

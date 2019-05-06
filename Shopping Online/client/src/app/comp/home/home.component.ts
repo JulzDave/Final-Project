@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   totalAmountOfProducts: number;
   totalAmountOfOrders: number = null;
   openCartPrice: number = null;
+  loadingComplete: boolean = false;
 
   isRegistered(): void {
     this.submitted = false;
@@ -125,7 +126,9 @@ export class HomeComponent implements OnInit {
 
   login():void | undefined {
     this.submitted = true;
+    this.loadingComplete = false;
     if (!this.loginForm.valid) {
+      this.loadingComplete = true;
       return;
     }
     this.userService.getAllUsers(this.loginForm.value).subscribe(data => {
@@ -140,6 +143,7 @@ export class HomeComponent implements OnInit {
       }
       else {
         this.loginErr = this.f3.password.value;
+        this.loadingComplete = true;
       }
     });
   }
@@ -156,10 +160,14 @@ export class HomeComponent implements OnInit {
 
         this.userService.searchUserProducts(data._id).subscribe(data2 => {
           if (data2.length > 0) {
-            for (let i:number = 0; i < data2.length; i++) {
+            for (var i:number = 0; i < data2.length; i++) {
               this.openCartPrice += data2[i]["totalPrice"]
             }
             this.openCartPrice = parseFloat(this.openCartPrice.toFixed(2));
+            debugger;
+            if(data2.length === i){
+              this.loadingComplete = true;
+            }
           }
         })
       }
@@ -229,6 +237,15 @@ export class HomeComponent implements OnInit {
         this.totalAmountOfOrders = data.length;
       }
     });
+    var loadCondition = () => {
+      if(this.totalAmountOfOrders && this.totalAmountOfProducts){
+        this.loadingComplete = true;
+      }
+      else setTimeout(() => {
+        loadCondition();
+      }, 100); 
+    }
+    loadCondition();
   }
 
 }

@@ -254,6 +254,12 @@ table {
 
   }
   
+@media only screen and (max-width: 1222px) {
+    .spinnerCont{
+        align-self: self-start;
+    }
+}
+
 @media only screen and (max-width: 1426px) and (min-width: 1222px) {
     
     body {

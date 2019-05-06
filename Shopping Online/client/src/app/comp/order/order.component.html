@@ -1,3 +1,18 @@
+<div class="spinnerCont" *ngIf="!loadingComplete">
+  <img src="../../../assets/images/Sketch2.png" alt="Waiting for the website to load">
+  <span class="loadCont">
+      <div class="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
+      </div>
+  </span>
+</div>
 <div class="orderCont" [ngClass]="{ 'is-disabled': success }">
   <div *ngIf="success" class="success">
     <h2 class="successHeader">Order Submission Successful</h2><br />
@@ -19,10 +34,8 @@
         <table style="color:white;">
           <tr class="arrangeProdInCart">
             <div *ngFor="let product of order; let first = first" class="barProdCont">
-              <td><img matTooltip="{{product[1].title}}" TooltipVisibility='visible' [matTooltipPosition]="'after'"
-                  src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
-              <td class="barProd" matTooltip="{{product[1].title}}" TooltipVisibility='visible'
-                [matTooltipPosition]="'after'">
+              <td><img src="{{product[1].url}}" alt="{{product[1].title}}" class="barProdImg"></td>
+              <td class="barProd">
                 <span style="font-size:18px;cursor: default" ngxTextHighlight [content]="product[1].title"
                   [searchTerm]="searchText" [caseSensitive]="false">
                 </span>

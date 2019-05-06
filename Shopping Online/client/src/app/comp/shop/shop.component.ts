@@ -34,7 +34,12 @@ export class ShopComponent implements OnInit, OnDestroy {
   prodID: string;
   selectedProdToEdit: string;
   adminAddmode: boolean = false;
-  sidebarSmartphone:boolean;
+  sidebarSmartphone: boolean;
+  loadingCart: boolean = true;
+  loadingProducts: boolean = true;
+  hasLoaded: number = 0;
+  loadingComplete:boolean = false;
+  cartRefresh:boolean = false;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -90,7 +95,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     });
   }
 
-  chooseProdToEdit(ev:any): void {
+  chooseProdToEdit(ev: any): void {
     this.submitted = false;
     this.AdminEditMode = true
     this.prodID = ev.target.parentElement.parentElement.children[0].id;
@@ -142,7 +147,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Eggs & Meat") {
       prodType = "meat"
     }
-    if(this.adminAddmode){
+    if (this.adminAddmode) {
       this.addProduct.reset();
       this.adminAddmode = false;
     }
@@ -169,19 +174,19 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   activator(e): void {
 
-    for (let i:number = 0; i < document.getElementsByClassName('navCat').length; i++) {
+    for (let i: number = 0; i < document.getElementsByClassName('navCat').length; i++) {
       document.getElementsByClassName('navCat')[i].classList.remove("activateCategory");
     }
     e.target.classList.add("activateCategory");
 
-    for (let i:number = 0; i < document.getElementsByClassName('nav-link').length; i++) {
+    for (let i: number = 0; i < document.getElementsByClassName('nav-link').length; i++) {
       document.getElementsByClassName('nav-link')[i].classList.remove("activateCategory");
     }
     e.target.classList.add("activateCategory");
 
 
     this.userService.categories().subscribe(assignCategory => {
-      this.currentCategory = assignCategory.map((t: any): void => t).filter((cat:any): boolean => { return cat.category === e.target.id })[0]._id
+      this.currentCategory = assignCategory.map((t: any): void => t).filter((cat: any): boolean => { return cat.category === e.target.id })[0]._id
 
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
@@ -195,35 +200,36 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   searchProduct(): void {
 
-    this.userService.getProducts().subscribe((data:any):void => {
+    this.userService.getProducts().subscribe((data: any): void => {
       data.map(data => data.title = data.title.toLowerCase());
       this.category = data.filter((product) => product.title.includes(this.searchValue.toLowerCase()));
     });
 
-    for (let i:number = 0; i < document.getElementsByClassName('navCat').length; i++) {
+    for (let i: number = 0; i < document.getElementsByClassName('navCat').length; i++) {
       document.getElementsByClassName('navCat')[i].classList.remove("activateCategory");
     }
-    for (let i:number = 0; i < document.getElementsByClassName('nav-link').length; i++) {
+    for (let i: number = 0; i < document.getElementsByClassName('nav-link').length; i++) {
       document.getElementsByClassName('nav-link')[i].classList.remove("activateCategory");
     }
   }
 
   onResize(): void {
     this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 230).toString());
-    if(this.cols === 0){
+    if (this.cols === 0) {
       this.cols = 1
     }
     (document.getElementsByClassName("card-container") as HTMLCollectionOf<HTMLDivElement>)[0].style.columns = this.cols.toString();
 
     if (document.getElementsByClassName("wrapper")[0].clientWidth < 100 && !this.sidebarSmartphone) {
-     setTimeout(() => {
-       
-       document.getElementById("sidebar").style.display = "flex";
+      setTimeout(() => {
+
+        document.getElementById("sidebar").style.display = "flex";
       }, 100);
     }
   }
 
   getUserProducts(): any {
+    this.cartRefresh = true;
 
     this.shopService.searchUserCart(this.user._id).subscribe(data => {
       this.myCart = data
@@ -236,20 +242,25 @@ export class ShopComponent implements OnInit, OnDestroy {
           this.myProducts = [];
           this.orderCost = 0;
           this.firstUse = false;
-          for (let i:number = 0; i < this.cartItems.length; i++) {
+          for (var i: number = 0; i < this.cartItems.length; i++) {
             this.myProducts.push([this.cartItems[i], data3.userProd[i]])
             this.orderCost += this.myProducts[i][0].totalPrice
+          }
+          if(this.myProducts.length === i){
+            this.cartRefresh = false;
           }
         });
       });
     });
   }
 
-  delProd(ev:any):void | undefined {
+  delProd(ev: any): void | undefined {
+    this.cartRefresh = true;
     this.shopService.deleteProd({ product: ev.target.id, cart: this.myCart[0]._id }).subscribe(data => { });
     this.myProducts = [];
 
     if (ev.target.parentElement.parentElement.children.length === 1) {
+      this.cartRefresh = false;
       this.shopService.deleteCart(this.myCart[0]._id).subscribe(data => { });
       this.myCart = [];
       this.orderCost = 0;
@@ -263,7 +274,7 @@ export class ShopComponent implements OnInit, OnDestroy {
           this.shopService.displayUserProducts(data2).subscribe(data3 => {
             this.myProducts = [];
             this.firstUse = false;
-            for (let i:number = 0; i < this.cartItems.length; i++) {
+            for (let i: number = 0; i < this.cartItems.length; i++) {
               this.myProducts.push([this.cartItems[i], data3.userProd[i]])
               this.orderCost += this.myProducts[i][0].totalPrice
             }
@@ -292,7 +303,7 @@ export class ShopComponent implements OnInit, OnDestroy {
           this.shopService.displayUserProducts(data2).subscribe(data3 => {
             this.myProducts = [];
             this.firstUse = false;
-            for (let i:number = 0; i < this.cartItems.length; i++) {
+            for (let i: number = 0; i < this.cartItems.length; i++) {
               this.myProducts.push([this.cartItems[i], data3.userProd[i]])
               this.orderCost += this.myProducts[i][0].totalPrice
             }
@@ -329,7 +340,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnInit(): void | undefined{
+  ngOnInit(): void | undefined {
     this.onResize();
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
@@ -339,7 +350,7 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.AdminEditMode = false;
       }
       else {
-        setTimeout(():void => {
+        setTimeout((): void => {
           this.reassignType();
         }, 100);
       }
@@ -347,19 +358,52 @@ export class ShopComponent implements OnInit, OnDestroy {
     setTimeout((): void => {
       this.userService.shopCompActive = true;
     }, 100);
-      
+
     this.userService.categories().subscribe(assignCategory => {
-      this.currentCategory = assignCategory.map((t:any): void => t)[0]._id;
+      this.currentCategory = assignCategory.map((t: any): void => t)[0]._id;
 
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
-        this.category = this.products.filter((categ:any):boolean => { return categ.type === this.currentCategory });
+        this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
+        var checkIfImageHasLoaded: any = () => {
+          if (document.getElementsByClassName("card-image").length === this.category.length) {
+            this.hasLoaded = 0;
+            for (let i: number = 0; i < this.category.length; i++) {
+              if ((document.getElementsByClassName("card-image")[i] as HTMLImageElement).height > 50) {
+                this.hasLoaded = i
+              }
+              else setTimeout(() => {
+                checkIfImageHasLoaded()
+              }, 100);
+            }
+            if (this.hasLoaded === this.category.length - 1) {
+              this.loadingProducts = false;
+            }
+            else setTimeout(() => {
+              checkIfImageHasLoaded()
+            }, 100);
+          }
+          else setTimeout(() => {
+            checkIfImageHasLoaded()
+          }, 100);
+          debugger;
+          if (!this.loadingCart && !this.loadingProducts) {
+            debugger;
+            this.loadingComplete = true;
+          }
+          else setTimeout(() => {
+            checkIfImageHasLoaded()
+          }, 100);
+        }
+        checkIfImageHasLoaded()
       });
     });
 
     this.shopService.searchUserCart(this.user._id).subscribe(data => {
       this.myCart = data
       if (data.length === 0) {
+        debugger;
+        this.loadingCart = false;
         return;
       }
       this.userService.searchUserProducts(data[0]._id).subscribe(data2 => {
@@ -367,10 +411,11 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.shopService.displayUserProducts(data2).subscribe(data3 => {
           this.myProducts = [];
           this.firstUse = false;
-          for (let i:number = 0; i < this.cartItems.length; i++) {
+          for (let i: number = 0; i < this.cartItems.length; i++) {
             this.myProducts.push([this.cartItems[i], data3.userProd[i]])
             this.orderCost += this.myProducts[i][0].totalPrice
           }
+          this.loadingCart = false;
         });
       });
     });
