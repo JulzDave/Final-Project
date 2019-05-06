@@ -29,6 +29,7 @@ export class OrderComponent implements OnInit {
   cardType: string;
   finishedOrder: any;
   loadingComplete: boolean = false;
+  hideImgOnOrder: boolean = false
 
   constructor(private shopService: ShopService, private router: Router) { }
 
@@ -149,18 +150,24 @@ export class OrderComponent implements OnInit {
   }
 
   orderAction(): void {
+    this.hideImgOnOrder = true;
+    
+    this.loadingComplete = false;
     this.submitted = true;
     if (this.f4.deliveryDate.value && this.f4.expirationDate.value && this.orderDetails.valid && this.matIcon === "check") {
       (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflowY = "hidden";
-      this.success = true;
       this.shopService.CreateNewOrder({ orderDetails: this.f4, orderCost: this.orderCost, user: this.user, myCart: this.myCart })
         .subscribe(data => {
           this.finishedOrder = data
           if (data.cartID) {
             this.orderGeneration = data.generated
             this.shopService.lockCartProd({ cartID: data.cartID, generated: data.generated }).subscribe(data => {
-              this.shopService.lockCart({ userID: this.user._id, generated: this.orderGeneration }).subscribe(data2 => { })
-            })
+              this.shopService.lockCart({ userID: this.user._id, generated: this.orderGeneration }).subscribe(data2 => { 
+                this.success = true;
+                this.loadingComplete = true;
+                this.hideImgOnOrder = false;
+               })
+              })
           }
         });
     }

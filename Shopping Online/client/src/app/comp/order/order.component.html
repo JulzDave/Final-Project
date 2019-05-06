@@ -1,5 +1,5 @@
 <div class="spinnerCont" *ngIf="!loadingComplete">
-  <img src="../../../assets/images/Sketch2.png" alt="Waiting for the website to load">
+  <img *ngIf="!hideImgOnOrder" src="../../../assets/images/Sketch2.png" alt="Waiting for the website to load">
   <span class="loadCont">
       <div class="lds-roller">
           <div></div>
