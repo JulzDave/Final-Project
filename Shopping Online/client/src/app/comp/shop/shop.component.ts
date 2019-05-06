@@ -40,6 +40,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   hasLoaded: number = 0;
   loadingComplete:boolean = false;
   cartRefresh:boolean = false;
+  productViewLoad:boolean = false;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -113,6 +114,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   boss_editProduct(): void {
+    this.cartRefresh = true;
     this.submitted = true;
     if (this.addProduct.valid) {
       this.shopService.adminEditProduct({
@@ -131,20 +133,21 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   reassignType(): void {
-    var prodType: string;
-    if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Dairy") {
+    var prodType: string | undefined;
+    debugger;
+    if (this.f5.addProdCategory.value == "5cab6fdbf0eb9b1b90c11de3") {
       prodType = "dairy"
     }
-    if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Vegetable") {
+    else if (this.f5.addProdCategory.value == "5cab7008240e0a1b90211b06") {
       prodType = "vegetable"
     }
-    if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Fruit") {
+    else if (this.f5.addProdCategory.value == "5cab7022240e0a1b90211b07") {
       prodType = "fruit"
     }
-    if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Pastry") {
+    else if (this.f5.addProdCategory.value == "5cab7041240e0a1b90211b08") {
       prodType = "bakery"
     }
-    if ((<HTMLElement>document.getElementById("selectType").children[0].children[0].children[0].children[0]).innerText == "Eggs & Meat") {
+    else if (this.f5.addProdCategory.value == "5cab705b240e0a1b90211b09") {
       prodType = "meat"
     }
     if (this.adminAddmode) {
@@ -173,7 +176,8 @@ export class ShopComponent implements OnInit, OnDestroy {
   });
 
   activator(e): void {
-
+    this.category = []
+    this.productViewLoad = true;
     for (let i: number = 0; i < document.getElementsByClassName('navCat').length; i++) {
       document.getElementsByClassName('navCat')[i].classList.remove("activateCategory");
     }
@@ -183,15 +187,16 @@ export class ShopComponent implements OnInit, OnDestroy {
       document.getElementsByClassName('nav-link')[i].classList.remove("activateCategory");
     }
     e.target.classList.add("activateCategory");
-
-
+    
+    
     this.userService.categories().subscribe(assignCategory => {
       this.currentCategory = assignCategory.map((t: any): void => t).filter((cat: any): boolean => { return cat.category === e.target.id })[0]._id
-
+      
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
         this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
-
+        this.cartRefresh = false;
+        this.productViewLoad = false;
       })
     })
 
@@ -320,6 +325,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   Boss_AddProduct(): void {
+    this.cartRefresh = true;
     this.submitted = true;
     if (this.addProduct.valid) {
       this.shopService.adminAdd({
@@ -335,8 +341,10 @@ export class ShopComponent implements OnInit, OnDestroy {
           this.AdminEditMode = true;
           this.ngOnInit();
         }
+        else this.cartRefresh = false;
       });
     }
+    else this.cartRefresh = false;
   }
 
 

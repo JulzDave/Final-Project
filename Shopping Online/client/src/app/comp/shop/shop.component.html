@@ -60,73 +60,104 @@
                     </ul>
                 </li>
                 <form *ngIf="user.role === 'admin'" [formGroup]="addProduct" class="adminForm">
-                    <mat-form-field>
-                        <input [ngClass]="{ 'is-invalid': submitted && f5.addProdTitle.errors }" autocomplete="off"
-                            formControlName="addProdTitle" class="sidebarInput" matInput type="text" placeholder="Title"
-                            maxlength="34">
-                        <button mat-button *ngIf="f5.addProdTitle.value" matSuffix mat-icon-button aria-label="Clear">
-                            <mat-icon (click)="f5.addProdTitle.setValue(null)">close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                    <div *ngIf="submitted && f5.addProdTitle.errors">
-                        <div class="formErr blocked" *ngIf="f5.addProdTitle.errors.required">Title required</div>
-                    </div>
-                    <mat-form-field>
-                        <textarea [ngClass]="{ 'is-invalid': submitted && f5.addProdDescription.errors }"
-                            style="overflow: hidden;" mat-autosize matInput placeholder="Product description"
-                            autocomplete="off" formControlName="addProdDescription" class="sidebarInput"></textarea>
-                        <button mat-button *ngIf="f5.addProdDescription.value" matSuffix mat-icon-button
-                            aria-label="Clear">
-                            <mat-icon (click)="f5.addProdDescription.setValue(null)">close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                    <div *ngIf="submitted && f5.addProdDescription.errors">
-                        <div class="formErr blocked" *ngIf="f5.addProdDescription.errors.required">Description required
+                    <table style="width:100%">
+                        <tr *ngIf="cartRefresh" style="display: flex; justify-content: center; align-items: center;">
+                            <td>
+                                <div class="lds-default">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <span *ngIf="!cartRefresh">
+                        <mat-form-field>
+                            <input [ngClass]="{ 'is-invalid': submitted && f5.addProdTitle.errors }" autocomplete="off"
+                                formControlName="addProdTitle" class="sidebarInput" matInput type="text"
+                                placeholder="Title" maxlength="34">
+                            <button mat-button *ngIf="f5.addProdTitle.value" matSuffix mat-icon-button
+                                aria-label="Clear">
+                                <mat-icon (click)="f5.addProdTitle.setValue(null)">close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <div *ngIf="submitted && f5.addProdTitle.errors">
+                            <div class="formErr blocked" *ngIf="f5.addProdTitle.errors.required">Title required</div>
                         </div>
-                    </div>
-                    <mat-form-field>
-                        <input [ngClass]="{ 'is-invalid': submitted && f5.addProdPrice.errors }" autocomplete="off"
-                            formControlName="addProdPrice" class="sidebarInput" matInput type="number"
-                            placeholder="Price" min="0">
-                        <button mat-button *ngIf="f5.addProdPrice.value" matSuffix mat-icon-button aria-label="Clear">
-                            <mat-icon (click)="f5.addProdPrice.setValue(null)">close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                    <div *ngIf="submitted && f5.addProdPrice.errors">
-                        <div class="formErr blocked" *ngIf="f5.addProdPrice.errors.required">Price required</div>
-                        <div class="formErr blocked"
-                            *ngIf="(f5.addProdPrice.errors.min || f5.addProdPrice.errors.max) && !f5.addProdPrice.errors.required">
-                            $0.001 &lt; price &lt; $1000</div>
-                    </div>
-                    <mat-form-field>
-                        <mat-select id="selectType" [ngClass]="{ 'is-invalid': submitted && f5.addProdCategory.errors }"
-                            placeholder="Select Category" formControlName="addProdCategory" class="sidebarInput">
-                            <mat-option data-type="dairy" class="sidebarInput" value="5cab6fdbf0eb9b1b90c11de3">Dairy
-                            </mat-option>
-                            <mat-option data-type="vegetable" class="sidebarInput" value="5cab7008240e0a1b90211b06">
-                                Vegetable</mat-option>
-                            <mat-option data-type="fruit" class="sidebarInput" value="5cab7022240e0a1b90211b07">Fruit
-                            </mat-option>
-                            <mat-option data-type="bakery" class="sidebarInput" value="5cab7041240e0a1b90211b08">Pastry
-                            </mat-option>
-                            <mat-option data-type="meat" class="sidebarInput" value="5cab705b240e0a1b90211b09">Eggs &
-                                Meat</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div *ngIf="submitted && f5.addProdCategory.errors">
-                        <div class="formErr blocked" *ngIf="f5.addProdCategory.errors.required">Category required</div>
-                    </div>
-                    <mat-form-field>
-                        <input [ngClass]="{ 'is-invalid': submitted && f5.addProdImg.errors }" autocomplete="off"
-                            formControlName="addProdImg" class="sidebarInput" matInput type="text"
-                            placeholder="Image url">
-                        <button mat-button *ngIf="f5.addProdImg.value" matSuffix mat-icon-button aria-label="Clear">
-                            <mat-icon (click)="f5.addProdImg.setValue(null)">close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                    <div *ngIf="submitted && f5.addProdImg.errors">
-                        <div class="formErr blocked" *ngIf="f5.addProdImg.errors.required">Image url required</div>
-                    </div>
+                        <mat-form-field>
+                            <textarea [ngClass]="{ 'is-invalid': submitted && f5.addProdDescription.errors }"
+                                style="overflow: hidden;" mat-autosize matInput placeholder="Product description"
+                                autocomplete="off" formControlName="addProdDescription" class="sidebarInput"></textarea>
+                            <button mat-button *ngIf="f5.addProdDescription.value" matSuffix mat-icon-button
+                                aria-label="Clear">
+                                <mat-icon (click)="f5.addProdDescription.setValue(null)">close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <div *ngIf="submitted && f5.addProdDescription.errors">
+                            <div class="formErr blocked" *ngIf="f5.addProdDescription.errors.required">Description
+                                required
+                            </div>
+                        </div>
+                        <mat-form-field>
+                            <input [ngClass]="{ 'is-invalid': submitted && f5.addProdPrice.errors }" autocomplete="off"
+                                formControlName="addProdPrice" class="sidebarInput" matInput type="number"
+                                placeholder="Price" min="0">
+                            <button mat-button *ngIf="f5.addProdPrice.value" matSuffix mat-icon-button
+                                aria-label="Clear">
+                                <mat-icon (click)="f5.addProdPrice.setValue(null)">close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <div *ngIf="submitted && f5.addProdPrice.errors">
+                            <div class="formErr blocked" *ngIf="f5.addProdPrice.errors.required">Price required</div>
+                            <div class="formErr blocked"
+                                *ngIf="(f5.addProdPrice.errors.min || f5.addProdPrice.errors.max) && !f5.addProdPrice.errors.required">
+                                $0.001 &lt; price &lt; $1000</div>
+                        </div>
+                        <mat-form-field>
+                            <mat-select id="selectType"
+                                [ngClass]="{ 'is-invalid': submitted && f5.addProdCategory.errors }"
+                                placeholder="Select Category" formControlName="addProdCategory" class="sidebarInput">
+                                <mat-option data-type="dairy" class="sidebarInput" value="5cab6fdbf0eb9b1b90c11de3">
+                                    Dairy
+                                </mat-option>
+                                <mat-option data-type="vegetable" class="sidebarInput" value="5cab7008240e0a1b90211b06">
+                                    Vegetable</mat-option>
+                                <mat-option data-type="fruit" class="sidebarInput" value="5cab7022240e0a1b90211b07">
+                                    Fruit
+                                </mat-option>
+                                <mat-option data-type="bakery" class="sidebarInput" value="5cab7041240e0a1b90211b08">
+                                    Pastry
+                                </mat-option>
+                                <mat-option data-type="meat" class="sidebarInput" value="5cab705b240e0a1b90211b09">Eggs
+                                    &
+                                    Meat</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="submitted && f5.addProdCategory.errors">
+                            <div class="formErr blocked" *ngIf="f5.addProdCategory.errors.required">Category required
+                            </div>
+                        </div>
+                        <mat-form-field>
+                            <input [ngClass]="{ 'is-invalid': submitted && f5.addProdImg.errors }" autocomplete="off"
+                                formControlName="addProdImg" class="sidebarInput" matInput type="text"
+                                placeholder="Image url">
+                            <button mat-button *ngIf="f5.addProdImg.value" matSuffix mat-icon-button aria-label="Clear">
+                                <mat-icon (click)="f5.addProdImg.setValue(null)">close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <div *ngIf="submitted && f5.addProdImg.errors">
+                            <div class="formErr blocked" *ngIf="f5.addProdImg.errors.required">Image url required</div>
+                        </div>
+                    </span>
                 </form>
                 <div class="prodInCart" *ngIf="user.role === 'user'">
                     <table>
@@ -272,6 +303,9 @@
 
 
     <div class="shopProducts">
+        <div class="productLoad" *ngIf="productViewLoad">
+            <div class="loader">Loading...</div>
+        </div>
         <div *ngIf="category?.length === 0"
             style="color:beige;font-size:20px;font-family: 'Open Sans Condensed', sans-serif; letter-spacing: 3px;">No
             matches found...</div>

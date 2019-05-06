@@ -9,8 +9,7 @@ import { saveAs } from 'file-saver';
 })
 
 export class AppComponent {
-  title = 'client';
-
+  loading:boolean = false
 constructor(private userService:UserService){}
 
   get user(): any { return this.userService.user; }
@@ -18,9 +17,9 @@ constructor(private userService:UserService){}
 
 
   logOut() {
+    this.loading = true
     this.userService.logOut().subscribe(data=>{});
     window.location.reload();
-    
   };
 
 

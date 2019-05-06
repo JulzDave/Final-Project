@@ -75,6 +75,9 @@
     color: red;
     text-shadow: 0 0 5px red;
 }
+.logout:active{
+    -webkit-text-stroke: 2px red;
+}
 
 .mainNav{
     z-index:930;

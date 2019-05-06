@@ -1,3 +1,17 @@
+<div class="spinnerCont" *ngIf="loading">
+    <span class="loadCont">
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
+        </div>
+    </span>
+</div>
 <header>
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-success mainNav" [ngClass]="{'no-border': shopComp }">
     <a class="navbar-brand" [routerLink]="['/home']" (click)="fixOverflow()"
