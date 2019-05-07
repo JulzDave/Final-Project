@@ -151,7 +151,6 @@ export class OrderComponent implements OnInit {
 
   orderAction(): void {
     this.hideImgOnOrder = true;
-    
     this.loadingComplete = false;
     this.submitted = true;
     if (this.f4.deliveryDate.value && this.f4.expirationDate.value && this.orderDetails.valid && this.matIcon === "check") {
@@ -171,6 +170,7 @@ export class OrderComponent implements OnInit {
           }
         });
     }
+    else this.loadingComplete = true;
   }
 
   computeOrderDeliveryOverload(): void {
