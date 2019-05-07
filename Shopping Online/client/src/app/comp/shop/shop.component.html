@@ -16,12 +16,16 @@
 <div class="shopCont">
     <div class="wrapper">
         <div id="sidebar">
-                <ul class="list-unstyled components">
+            <ul class="list-unstyled components">
                 <mat-form-field class="example-form-field">
                     <input autocomplete="off" id="searchValue" class="sidebarInput" matInput type="text"
                         placeholder="Search" [(ngModel)]="searchValue" (keydown.enter)="searchProduct()">
-                        <mat-icon *ngIf="searchValue" style="font-size: 20px; position: relative; top: 5px; left: -25px; cursor: pointer;"  matSuffix mat-icon-button (click)="searchProduct()">search</mat-icon>
-                        <mat-icon *ngIf="searchValue" style="font-size: 20px; position: absolute; top: 5px; cursor: pointer; left: 0px;;" matSuffix mat-icon-button (click)="searchValue=null">close</mat-icon>
+                    <mat-icon *ngIf="searchValue"
+                        style="font-size: 20px; position: relative; top: 5px; left: -25px; cursor: pointer;" matSuffix
+                        mat-icon-button (click)="searchProduct()">search</mat-icon>
+                    <mat-icon *ngIf="searchValue"
+                        style="font-size: 20px; position: absolute; top: 5px; cursor: pointer; left: 0px;;" matSuffix
+                        mat-icon-button (click)="searchValue=null">close</mat-icon>
                 </mat-form-field>
                 <div class="sidebar-header" *ngIf="user.role === 'user'">
                     <h4
@@ -224,7 +228,8 @@
             <ul *ngIf="user.role === 'admin' && !AdminEditMode" class="list-unstyled CTAs"
                 style="margin-top: 10px; margin-bottom: 0px;">
                 <li>
-                    <button [ngClass]="{'disabler': cartRefresh}" (click)="Boss_AddProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                    <button [ngClass]="{'disabler': cartRefresh}" (click)="Boss_AddProduct()" mat-flat-button
+                        color="primary" class="sidebarBtn"
                         style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">Add
                         Product
                         <mat-icon style="transform: translate(2px,-2px);">note_add</mat-icon> </button>
@@ -233,7 +238,8 @@
             <ul *ngIf="user.role === 'admin' && AdminEditMode" class="list-unstyled CTAs"
                 style="margin-top: -20px; margin-bottom: 0px;">
                 <li>
-                    <button [ngClass]="{'disabler': cartRefresh}" (click)="boss_editProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                    <button [ngClass]="{'disabler': cartRefresh}" (click)="boss_editProduct()" mat-flat-button
+                        color="primary" class="sidebarBtn"
                         style="background: #00002f; transform: translate(-20px); border: 2px ridge gold;">Edit Product
                         <mat-icon style="transform: translate(2px,-2px);">edit</mat-icon> </button>
                 </li>
@@ -241,7 +247,8 @@
             <ul *ngIf="user.role === 'admin' && AdminEditMode" class="list-unstyled CTAs"
                 style="margin-top: -30px; margin-bottom: 0px;">
                 <li>
-                    <button [ngClass]="{'disabler': cartRefresh}" (click)="Boss_goToAddNewProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                    <button [ngClass]="{'disabler': cartRefresh}" (click)="Boss_goToAddNewProduct()" mat-flat-button
+                        color="primary" class="sidebarBtn"
                         style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">New
                         product
                         <mat-icon style="transform: translate(2px,-2px);">keyboard_return</mat-icon> </button>

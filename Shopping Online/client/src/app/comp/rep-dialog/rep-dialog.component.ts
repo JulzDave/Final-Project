@@ -4,7 +4,7 @@ import { Inject } from '@angular/core';
 import { ShopService } from 'src/app/services/shop.service';
 import { UserService } from 'src/app/services/user.service';
 
-var user:any;
+var user: any;
 
 @Component({
   selector: 'app-rep-dialog',
@@ -25,7 +25,7 @@ export class RepDialogComponent implements OnInit {
     this.amount = this.amount + 1;
     this.totProdPrice = parseFloat(this.totProdPrice) + parseFloat(this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1]);
     this.totProdPrice = this.totProdPrice.toString().substr(0, 6);
-    
+
   }
 
   minusP(): void {
@@ -47,9 +47,9 @@ export class RepDialogComponent implements OnInit {
             amount: this.amount,
             totalPrice: this.totProdPrice
           }).subscribe(data3 => {
-            
+
           });
-          
+
         });
       }
       else {
@@ -59,7 +59,7 @@ export class RepDialogComponent implements OnInit {
           amount: this.amount,
           totalPrice: this.totProdPrice
         }).subscribe(data3 => {
-          
+
         });
       }
     })

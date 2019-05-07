@@ -1,23 +1,23 @@
 <div class="spinnerCont" *ngIf="!loadingComplete">
   <img *ngIf="!hideImgOnOrder" src="../../../assets/images/Sketch2.png" alt="Waiting for the website to load">
   <span class="loadCont">
-      <div class="lds-roller">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
-      </div>
+    <div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...
+    </div>
   </span>
 </div>
 <div class="orderCont" [ngClass]="{ 'is-disabled': success }">
   <div *ngIf="success" class="success">
     <h2 class="successHeader">Order Submission Successful</h2><br />
     <p><span class="successDownloadreceipt" (click)="downloadPDF()">click here</span><span> to download your
-      receipt</span></p>
+        receipt</span></p>
     <p class="successReturn" (click)="return()">return to main page</p>
   </div>
   <div class="orderHeader" (click)="orderAction()">
@@ -125,8 +125,9 @@
               <p>
                 <mat-form-field style="text-align: center;"
                   [ngClass]="{'hideTitle': submitted && f4.houseNumber.errors?.required && f4.aptNumber.errors?.required}">
-                  <input matInput [matDatepicker]="picker" placeholder="Desired Delivery Date" [min]="minDeliveryDate" [matDatepickerFilter]="myFilter"
-                    formControlName="deliveryDate" style="font-family: 'Open Sans Condensed', sans-serif; color:white;">
+                  <input matInput [matDatepicker]="picker" placeholder="Desired Delivery Date" [min]="minDeliveryDate"
+                    [matDatepickerFilter]="myFilter" formControlName="deliveryDate"
+                    style="font-family: 'Open Sans Condensed', sans-serif; color:white;">
                   <mat-datepicker-toggle matSuffix [for]="picker" style="color:gold;outline:none;">
                   </mat-datepicker-toggle>
                   <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>

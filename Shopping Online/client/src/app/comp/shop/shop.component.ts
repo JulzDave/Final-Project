@@ -38,9 +38,9 @@ export class ShopComponent implements OnInit, OnDestroy {
   loadingCart: boolean = true;
   loadingProducts: boolean = true;
   hasLoaded: number = 0;
-  loadingComplete:boolean = false;
-  cartRefresh:boolean = false;
-  productViewLoad:boolean = false;
+  loadingComplete: boolean = false;
+  cartRefresh: boolean = false;
+  productViewLoad: boolean = false;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -134,7 +134,6 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   reassignType(): void {
     var prodType: string | undefined;
-    debugger;
     if (this.f5.addProdCategory.value == "5cab6fdbf0eb9b1b90c11de3") {
       prodType = "dairy"
     }
@@ -188,11 +187,11 @@ export class ShopComponent implements OnInit, OnDestroy {
       document.getElementsByClassName('nav-link')[i].classList.remove("activateCategory");
     }
     e.target.classList.add("activateCategory");
-    
-    
+
+
     this.userService.categories().subscribe(assignCategory => {
       this.currentCategory = assignCategory.map((t: any): void => t).filter((cat: any): boolean => { return cat.category === e.target.id })[0]._id
-      
+
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
         this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
@@ -212,7 +211,7 @@ export class ShopComponent implements OnInit, OnDestroy {
       data.map(data => data.title = data.title.toLowerCase());
       this.category = data.filter((product) => product.title.includes(this.searchValue.toLowerCase()));
       this.checkIfAllImagesLoaded()
-      if(this.category.length === 0){
+      if (this.category.length === 0) {
         this.productViewLoad = false;
       }
     });
@@ -258,7 +257,7 @@ export class ShopComponent implements OnInit, OnDestroy {
             this.myProducts.push([this.cartItems[i], data3.userProd[i]])
             this.orderCost += this.myProducts[i][0].totalPrice
           }
-          if(this.myProducts.length === i){
+          if (this.myProducts.length === i) {
             this.cartRefresh = false;
           }
         });
@@ -354,10 +353,9 @@ export class ShopComponent implements OnInit, OnDestroy {
     else this.cartRefresh = false;
   }
 
-  checkIfAllImagesLoaded(){
+  checkIfAllImagesLoaded() {
 
     var checkIfAllImagesLoaded: any = () => {
-      debugger;
       if (document.getElementsByClassName("card-image").length === this.category.length) {
         this.hasLoaded = 0;
         for (let i: number = 0; i < this.category.length; i++) {
@@ -379,9 +377,7 @@ export class ShopComponent implements OnInit, OnDestroy {
       else setTimeout(() => {
         checkIfAllImagesLoaded()
       }, 100);
-      debugger;
       if (!this.loadingCart && !this.loadingProducts) {
-        debugger;
         this.loadingComplete = true;
         return;
       }
@@ -420,14 +416,13 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
         this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
         this.checkIfAllImagesLoaded()
-        
+
       });
     });
 
     this.shopService.searchUserCart(this.user._id).subscribe(data => {
       this.myCart = data
       if (data.length === 0) {
-        debugger;
         this.loadingCart = false;
         return;
       }

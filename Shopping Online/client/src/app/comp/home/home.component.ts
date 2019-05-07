@@ -124,7 +124,7 @@ export class HomeComponent implements OnInit {
     password: new FormControl(null, [Validators.required]),
   });
 
-  login():void | undefined {
+  login(): void | undefined {
     this.submitted = true;
     this.loadingComplete = false;
     if (!this.loginForm.valid) {
@@ -160,12 +160,11 @@ export class HomeComponent implements OnInit {
 
         this.userService.searchUserProducts(data._id).subscribe(data2 => {
           if (data2.length > 0) {
-            for (var i:number = 0; i < data2.length; i++) {
+            for (var i: number = 0; i < data2.length; i++) {
               this.openCartPrice += data2[i]["totalPrice"]
             }
             this.openCartPrice = parseFloat(this.openCartPrice.toFixed(2));
-            debugger;
-            if(data2.length === i){
+            if (data2.length === i) {
               this.loadingComplete = true;
             }
           }
@@ -239,12 +238,12 @@ export class HomeComponent implements OnInit {
       }
     });
     var loadCondition = () => {
-      if(this.totalAmountOfOrders && this.totalAmountOfProducts){
+      if (this.totalAmountOfOrders && this.totalAmountOfProducts) {
         this.loadingComplete = true;
       }
       else setTimeout(() => {
         loadCondition();
-      }, 100); 
+      }, 100);
     }
     loadCondition();
   }
