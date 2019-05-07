@@ -172,7 +172,8 @@ export class HomeComponent implements OnInit {
         })
       }
       else {
-        this.cartStatus = "Start Shopping"
+        this.cartStatus = "Start Shopping";
+        this.loadingComplete = true;
       }
     });
     this.searchOrder();

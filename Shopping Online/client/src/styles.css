@@ -1,18 +1,31 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
-@import url('https://fonts.googleapis.com/css?family=Lobster');
-/* Import for the button by canvasplay*/
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,700,900');
-/* End of import for the button by canvasplay*/
-@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
+
+@font-face {
+  font-family: 'Lobster';
+  src: url('./assets/fonts/Lobster-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+  /* @import url('https://fonts.googleapis.com/css?family=Lobster'); */
+}
+
+@font-face {
+  font-family: 'Open Sans Condensed';
+  src: url('./assets/fonts/OpenSansCondensed-Light.ttf');
+  font-weight: normal;
+  font-style: normal;
+  /* @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300'); */
+}
+
+
 
 body{
     background-image: linear-gradient(90deg, #d00000 10%, white 10%, white 90%, #d00000 90%);
 }
 
-/*--------------------------------------------------
+/*---------------------------------------------------------------------------
    Button by canvasplay URL: https://codepen.io/canvasplay/pen/WXWobd 
-  --------------------------------------------------*/
+  ---------------------------------------------------------------------------*/
+
 .wrapper {
  
   display: flex;
@@ -20,6 +33,7 @@ body{
   align-items: center;
   justify-content: center;
 }
+
 .button {
 -webkit-touch-callout: none;
   user-select: none;
@@ -32,15 +46,18 @@ body{
   opacity: 0.8;
   color: black;
 }
+
 .button__text {
   display: block;
   padding: 1em 2em;
   text-transform: uppercase;
   font-weight: bold;
 }
+
 .button__text:before {
   content: attr(title);
 }
+
 .button__text--bis {
   display: block;
   position: absolute;
@@ -51,6 +68,7 @@ body{
   transform: translateX(-1em);
   opacity: 0;
 }
+
 .button__mask {
   display: block;
   position: absolute;
@@ -62,24 +80,30 @@ body{
   transform: translateX(-100%) rotate(45deg);
   transition: all 0.3s;
 }
+
 .button:hover {
   color: white;
   opacity: 1;
 }
+
 .button:hover .button__text {
   animation: fx-text 0.3s ease-out;
 }
+
 .button:hover .button__text--bis {
   animation: fx-text-bis 0.3s ease-out;
 }
+
 .button:hover .button__mask {
   animation: fx-mask 0.3s ease-out;
 }
+
 .button:active {
   opacity: 1;
   background: red;
   color: white;
 }
+
 @keyframes fx-mask {
   0% {
     transform: translateX(-100%) rotate(45deg);
@@ -88,21 +112,25 @@ body{
     transform: translateX(100%) rotate(45deg);
   }
 }
+
 @keyframes fx-text {
   0% {
     transform: translateX(0);
     opacity: 1;
   }
+
   100% {
     transform: translateX(1em);
     opacity: 0;
   }
 }
+
 @keyframes fx-text-bis {
   0% {
     transform: translateX(-1em);
     opacity: 0;
   }
+  
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -167,7 +195,7 @@ body{
 
 
 /* --------------------------------------------------
-  Loading Spinner
+  Main Loading Spinner
  ---------------------------------------------------*/
 
 .spinnerCont{
@@ -180,6 +208,7 @@ body{
   justify-content: center;
   align-items: center;
 }
+
 .spinnerCont img{
   width: 100%;
   height: 100vh;
@@ -312,9 +341,12 @@ body{
 }
 
 /* --------------------------------------------------
-  Loading Spinner End
+  Main Loading Spinner End
  ---------------------------------------------------*/
-
+ 
+ /* --------------------------------------------------
+   Media Queries
+  ---------------------------------------------------*/
 
 @media only screen and (max-width: 400px) {
 body {
