@@ -21,7 +21,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   category: any;
   enlargedView: boolean = false;
   currentCategory: string;
-  searchValue: string = null;
+  searchValue: string = "";
   userCartProducts: any;
   myCart: any;
   cartItems: any;
@@ -176,6 +176,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   });
 
   activator(e): void {
+    document.getElementsByClassName("shopProducts")[0].scrollBy(0, -(document.getElementsByClassName("card-container")[0].clientHeight));
     this.category = []
     this.productViewLoad = true;
     for (let i: number = 0; i < document.getElementsByClassName('navCat').length; i++) {
@@ -196,7 +197,7 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
         this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
         this.cartRefresh = false;
-        this.productViewLoad = false;
+        this.checkIfAllImagesLoaded()
       })
     })
 
@@ -204,12 +205,16 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   searchProduct(): void {
+    document.getElementsByClassName("shopProducts")[0].scrollBy(0, -(document.getElementsByClassName("card-container")[0].clientHeight));
     this.category = [];
     this.productViewLoad = true;
     this.userService.getProducts().subscribe((data: any): void => {
       data.map(data => data.title = data.title.toLowerCase());
       this.category = data.filter((product) => product.title.includes(this.searchValue.toLowerCase()));
-      this.productViewLoad = false;
+      this.checkIfAllImagesLoaded()
+      if(this.category.length === 0){
+        this.productViewLoad = false;
+      }
     });
 
     for (let i: number = 0; i < document.getElementsByClassName('navCat').length; i++) {
@@ -349,6 +354,44 @@ export class ShopComponent implements OnInit, OnDestroy {
     else this.cartRefresh = false;
   }
 
+  checkIfAllImagesLoaded(){
+
+    var checkIfAllImagesLoaded: any = () => {
+      debugger;
+      if (document.getElementsByClassName("card-image").length === this.category.length) {
+        this.hasLoaded = 0;
+        for (let i: number = 0; i < this.category.length; i++) {
+          if ((document.getElementsByClassName("card-image")[i] as HTMLImageElement).height > 50) {
+            this.hasLoaded = i
+          }
+          else setTimeout(() => {
+            checkIfAllImagesLoaded()
+          }, 100);
+        }
+        if (this.hasLoaded === this.category.length - 1) {
+          this.loadingProducts = false;
+          this.productViewLoad = false;
+        }
+        else setTimeout(() => {
+          checkIfAllImagesLoaded()
+        }, 100);
+      }
+      else setTimeout(() => {
+        checkIfAllImagesLoaded()
+      }, 100);
+      debugger;
+      if (!this.loadingCart && !this.loadingProducts) {
+        debugger;
+        this.loadingComplete = true;
+      }
+      else setTimeout(() => {
+        checkIfAllImagesLoaded()
+      }, 100);
+    }
+    checkIfAllImagesLoaded()
+
+  }
+
 
   ngOnInit(): void | undefined {
     this.onResize();
@@ -375,37 +418,8 @@ export class ShopComponent implements OnInit, OnDestroy {
       this.userService.getProducts().subscribe(getProductFromAssignedCategory => {
         this.products = getProductFromAssignedCategory.map(getProductFromAssignedCategory => getProductFromAssignedCategory);
         this.category = this.products.filter((categ: any): boolean => { return categ.type === this.currentCategory });
-        var checkIfImageHasLoaded: any = () => {
-          if (document.getElementsByClassName("card-image").length === this.category.length) {
-            this.hasLoaded = 0;
-            for (let i: number = 0; i < this.category.length; i++) {
-              if ((document.getElementsByClassName("card-image")[i] as HTMLImageElement).height > 50) {
-                this.hasLoaded = i
-              }
-              else setTimeout(() => {
-                checkIfImageHasLoaded()
-              }, 100);
-            }
-            if (this.hasLoaded === this.category.length - 1) {
-              this.loadingProducts = false;
-            }
-            else setTimeout(() => {
-              checkIfImageHasLoaded()
-            }, 100);
-          }
-          else setTimeout(() => {
-            checkIfImageHasLoaded()
-          }, 100);
-          debugger;
-          if (!this.loadingCart && !this.loadingProducts) {
-            debugger;
-            this.loadingComplete = true;
-          }
-          else setTimeout(() => {
-            checkIfImageHasLoaded()
-          }, 100);
-        }
-        checkIfImageHasLoaded()
+        this.checkIfAllImagesLoaded()
+        
       });
     });
 

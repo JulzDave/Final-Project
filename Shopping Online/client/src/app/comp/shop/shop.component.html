@@ -57,8 +57,8 @@
                     </ul>
                 </li>
                 <form *ngIf="user.role === 'admin'" [formGroup]="addProduct" class="adminForm">
-                    <table style="width:100%">
-                        <tr *ngIf="cartRefresh" style="display: flex; justify-content: center; align-items: center;">
+                    <table *ngIf="cartRefresh" style="width:100%">
+                        <tr style="display: flex; justify-content: center; align-items: center;">
                             <td>
                                 <div class="lds-default">
                                     <div></div>
@@ -224,7 +224,7 @@
             <ul *ngIf="user.role === 'admin' && !AdminEditMode" class="list-unstyled CTAs"
                 style="margin-top: 10px; margin-bottom: 0px;">
                 <li>
-                    <button (click)="Boss_AddProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                    <button [ngClass]="{'disabler': cartRefresh}" (click)="Boss_AddProduct()" mat-flat-button color="primary" class="sidebarBtn"
                         style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">Add
                         Product
                         <mat-icon style="transform: translate(2px,-2px);">note_add</mat-icon> </button>
@@ -233,7 +233,7 @@
             <ul *ngIf="user.role === 'admin' && AdminEditMode" class="list-unstyled CTAs"
                 style="margin-top: -20px; margin-bottom: 0px;">
                 <li>
-                    <button (click)="boss_editProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                    <button [ngClass]="{'disabler': cartRefresh}" (click)="boss_editProduct()" mat-flat-button color="primary" class="sidebarBtn"
                         style="background: #00002f; transform: translate(-20px); border: 2px ridge gold;">Edit Product
                         <mat-icon style="transform: translate(2px,-2px);">edit</mat-icon> </button>
                 </li>
@@ -241,14 +241,14 @@
             <ul *ngIf="user.role === 'admin' && AdminEditMode" class="list-unstyled CTAs"
                 style="margin-top: -30px; margin-bottom: 0px;">
                 <li>
-                    <button (click)="Boss_goToAddNewProduct()" mat-flat-button color="primary" class="sidebarBtn"
+                    <button [ngClass]="{'disabler': cartRefresh}" (click)="Boss_goToAddNewProduct()" mat-flat-button color="primary" class="sidebarBtn"
                         style="background: #00002f; transform: translate(-20px); border: 2px ridge gold; margin-bottom: 80px;">New
                         product
                         <mat-icon style="transform: translate(2px,-2px);">keyboard_return</mat-icon> </button>
                 </li>
             </ul>
             <ul *ngIf="user.role === 'user'" class="list-unstyled CTAs" style="margin-top: 10px; margin-bottom: 0px;"
-                [ngClass]="{'disabler': orderCost == '0'}">
+                [ngClass]="{'disabler': orderCost == '0' || cartRefresh}">
                 <span
                     style="cursor:default;font-family: lobster; position: absolute; margin-top: -31px; text-decoration: underline;">
                     Total Payment: <span style="color:gold;">${{orderCost.toFixed(2)}}</span></span>

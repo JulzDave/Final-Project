@@ -24,12 +24,12 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item opaque" *ngIf="user?.userIdNum">
-          <a class="nav-link">Hello <span style="text-transform:capitalize;">{{user.firstName}}</span> - {{user.email}} | <mat-icon matTooltip="Logout"
+          <a class="nav-link indentOnSmallScreen">Hello <span style="text-transform:capitalize;">{{user.firstName}}</span> - {{user.email}} | <mat-icon matTooltip="Logout"
               TooltipVisibility='visible' [matTooltipPosition]="'below'" aria-label="Logout" (click)="logOut()"
               class="logout">power_settings_new</mat-icon><span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item opaque" *ngIf="!user?.userIdNum">
-          <a class="nav-link">Hello Guest, Please log or sign in to enter our shop!<span class="sr-only">
+          <a class="nav-link indentOnSmallScreen">Hello Guest, Please log or sign in to enter our shop!<span class="sr-only">
               (current)
             </span></a>
         </li>
