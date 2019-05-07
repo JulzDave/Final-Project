@@ -10,10 +10,10 @@
 
 ### Try it locally
 - Make sure that MongoDB is running on your machine at port `27017`.
-- port `3000` is available to run node.js server.
-- and port `4200` is available to run the Angular frontend. 
+- Port `3000` is available to run node.js server.
+- And port `4200` is available to run the Angular frontend. 
 
-in the client folder, execute the following terminal commands:
+In the client folder, execute the following terminal commands:
 ```
     > npm install
     > npm start
