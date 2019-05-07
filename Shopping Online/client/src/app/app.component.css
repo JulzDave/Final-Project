@@ -24,13 +24,21 @@
     font-family: fantasy;
     letter-spacing: 3px;
     color: ghostwhite;
-    -webkit-text-stroke: 1px black;
     font-size: 20px;
     transform: scale(1.6) translate(22px, 0px);
+    -webkit-text-stroke: 0.5px rosybrown;
 }
 
 .navbar-brand:hover{
     color:gold;
+    -webkit-text-stroke: 0.5px chocolate;
+
+}
+
+.navbar-brand:active{
+    color: gold;
+    -webkit-text-stroke: 0.5px chocolate;
+    filter: saturate(0);
 }
 
 .hamburger-icon{
