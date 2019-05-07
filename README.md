@@ -20,7 +20,7 @@ in the client folder, execute the following terminal commands:
 
 ```
 
-In the client folder, execute the following terminal commands: 
+In the server folder, execute the following terminal commands: 
 ```
     > npm install
     > npm start
