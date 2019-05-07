@@ -335,5 +335,5 @@ body {
 ::selection {
   color: #d00000;
   background: rgb(0, 204, 255);
-  -webkit-text-stroke: 1px #d00000;
+  -webkit-text-stroke: 1px #160381;
 }

@@ -383,6 +383,7 @@ export class ShopComponent implements OnInit, OnDestroy {
       if (!this.loadingCart && !this.loadingProducts) {
         debugger;
         this.loadingComplete = true;
+        return;
       }
       else setTimeout(() => {
         checkIfAllImagesLoaded()
