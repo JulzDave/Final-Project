@@ -174,7 +174,9 @@ export class OrderComponent implements OnInit {
   }
 
   computeOrderDeliveryOverload(): void {
+    debugger
     this.shopService.getOrders().subscribe(data => {
+      debugger
       this.totalAmountOfOrders = data.length
       if (this.totalAmountOfOrders > 0) {
         this.allOrderDates = data.map(item => (item.scheduled.split(":")[0].substr(0, 15))).sort().reverse()
@@ -186,7 +188,8 @@ export class OrderComponent implements OnInit {
           if (duplicatedDateInstance.length > 2) {
             this.allDupedDates.push(duplicatedDateInstance[0])
             i += duplicatedDateInstance.length
-            if(i === this.totalAmountOfOrders){
+            if(i >= this.totalAmountOfOrders - 1){
+              
               this.loadingComplete = true
             }
           }
