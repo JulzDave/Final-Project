@@ -199,8 +199,6 @@ export class ShopComponent implements OnInit, OnDestroy {
         this.checkIfAllImagesLoaded()
       })
     })
-
-
   }
 
   searchProduct(): void {
@@ -353,7 +351,7 @@ export class ShopComponent implements OnInit, OnDestroy {
     else this.cartRefresh = false;
   }
 
-  checkIfAllImagesLoaded() {
+  checkIfAllImagesLoaded(): void {
 
     var checkIfAllImagesLoaded: any = () => {
       if (document.getElementsByClassName("card-image").length === this.category.length) {
