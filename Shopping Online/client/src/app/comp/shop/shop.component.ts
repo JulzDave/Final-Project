@@ -223,10 +223,20 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onResize(): void {
-    this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 250).toString());
-    if (this.cols === 0) {
+      (document.getElementById("sidebar") as HTMLDivElement).style.height = "100vh";
+      setTimeout(() => {
+        (document.getElementById("sidebar") as HTMLDivElement).style.height = "-webkit-fill-available";
+      }, 100);
+      
+      if(501 > document.getElementsByClassName("shopProducts")[0].clientWidth && document.getElementsByClassName("shopProducts")[0].clientWidth > 401){
+        this.cols = 2;
+      }
+      else this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 250).toString());
+    
+      if (this.cols === 0) {
       this.cols = 1
     }
+    
     (document.getElementsByClassName("card-container") as HTMLCollectionOf<HTMLDivElement>)[0].style.columns = this.cols.toString();
 
     if (document.getElementsByClassName("wrapper")[0].clientWidth < 100 && !this.sidebarSmartphone) {
