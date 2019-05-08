@@ -41,6 +41,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   loadingComplete: boolean = false;
   cartRefresh: boolean = false;
   productViewLoad: boolean = false;
+  showCategoriesOnSidebar: boolean = false;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -223,6 +224,11 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onResize(): void {
+    if(window.innerWidth < 992){
+      this.showCategoriesOnSidebar = true;
+    }
+    else this.showCategoriesOnSidebar = false ;
+
       (document.getElementById("sidebar") as HTMLDivElement).style.height = "100vh";
       setTimeout(() => {
         (document.getElementById("sidebar") as HTMLDivElement).style.height = "-webkit-fill-available";
@@ -236,7 +242,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.cols === 0) {
       this.cols = 1
     }
-    
+
     (document.getElementsByClassName("card-container") as HTMLCollectionOf<HTMLDivElement>)[0].style.columns = this.cols.toString();
 
     if (document.getElementsByClassName("wrapper")[0].clientWidth < 100 && !this.sidebarSmartphone) {
