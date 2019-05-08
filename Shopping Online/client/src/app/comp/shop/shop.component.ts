@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ShopService } from 'src/app/services/shop.service';
 import { MatDialog } from '@angular/material';
@@ -13,7 +13,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })
-export class ShopComponent implements OnInit, OnDestroy {
+export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
 
   user: any;
   products: any;
@@ -223,7 +223,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   }
 
   onResize(): void {
-    this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 230).toString());
+    this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 250).toString());
     if (this.cols === 0) {
       this.cols = 1
     }
@@ -389,7 +389,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void | undefined {
-    this.onResize();
+    
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
     if (this.user.role === "admin") {
@@ -438,6 +438,11 @@ export class ShopComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  ngAfterViewInit(){
+    this.onResize();
+  }
+
   ngOnDestroy(): void {
     this.userService.shopCompActive = false;
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "auto";
