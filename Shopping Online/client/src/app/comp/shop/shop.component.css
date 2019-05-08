@@ -77,8 +77,7 @@
 }
 
 .sidebarToggler:hover{
-    text-shadow: 0 0 20px yellow;
-    color: goldenrod;
+    color: gold;
 }
 
 a[data-toggle="collapse"] {

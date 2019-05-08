@@ -277,7 +277,8 @@
         class="navbar fixed-top navbar-expand-lg navbar-dark bg-success secondaryNav">
         <p (click)="toggleSidebar()" class="navbar-brand"
             style="align-self:center; -webkit-text-stroke:0px;font-family: 'Lobster', cursive;font-size: 40px;cursor: pointer;margin-top: 15px;">
-            <mat-icon class="sidebarToggler">line_style</mat-icon>
+            <mat-icon *ngIf="user.role === 'user'" class="sidebarToggler">line_style</mat-icon>
+            <mat-icon *ngIf="user.role === 'admin'" class="sidebarToggler">add_box</mat-icon>
         </p>
 
         <div class="collapse navbar-collapse" id="navbarText">
