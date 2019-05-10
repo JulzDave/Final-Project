@@ -185,7 +185,6 @@ table {
         justify-content: center;
         align-items: center;
         margin-top: -10px;
-        transform: scale(1) translate(-20px);
     }
     
     .cont {
@@ -218,7 +217,6 @@ table {
         }
         
     .cPanel {
-        font-family: 'Open Sans Condensed', sans-serif;
         transform: translate(-20px);
     }
 
