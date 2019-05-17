@@ -28,6 +28,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   myProducts: any[] = [];
   orderCost: number = 0;
   firstUse: boolean = true;
+  firstUse2: boolean = true;
   submitted: boolean = false;
   sidebarIsOpen: boolean = false;
   AdminEditMode: boolean = false;
@@ -42,6 +43,8 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   cartRefresh: boolean = false;
   productViewLoad: boolean = false;
   showCategoriesOnSidebar: boolean = false;
+  selectedFile: File = null;
+  imgUrl: string;
 
   constructor(private userService: UserService, private shopService: ShopService, public dialog: MatDialog, private router: Router) { }
 
@@ -100,6 +103,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   chooseProdToEdit(ev: any): void {
     this.submitted = false;
     this.AdminEditMode = true
+    this.selectedFile = null;
     this.prodID = ev.target.parentElement.parentElement.children[0].id;
     this.adminModeSidebar();
 
@@ -109,7 +113,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
         this.f5.addProdDescription.setValue(data[0].description);
         this.f5.addProdPrice.setValue(data[0].price);
         this.f5.addProdCategory.setValue(data[0].type);
-        this.f5.addProdImg.setValue(data[0].url);
+        this.imgUrl = data[0].url
       }
     })
   }
@@ -117,19 +121,32 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   boss_editProduct(): void {
     this.cartRefresh = true;
     this.submitted = true;
+
     if (this.addProduct.valid) {
-      this.shopService.adminEditProduct({
+      var editProduct = () => this.shopService.adminEditProduct({
         prodID: this.prodID,
         title: this.f5.addProdTitle.value,
         type: this.f5.addProdCategory.value,
         description: this.f5.addProdDescription.value,
-        url: this.f5.addProdImg.value,
+        url: this.imgUrl,
         price: this.f5.addProdPrice.value
       }).subscribe(data => {
         if (this.prodID === data._id) {
           this.ngOnInit();
         }
       });
+      if ((document.getElementById("uploadImg") as HTMLInputElement).value === "") {
+        editProduct();
+      }
+      else {
+        this.shopService.adminUploadImage(this.selectedFile).subscribe(imgUploadData => {
+          let imgName = (imgUploadData.toString() as string).split("_")[0] + "." + (imgUploadData.toString() as string).split(".")[1]
+          if (imgName === this.selectedFile.name) {
+            this.imgUrl = "uploads/" + imgUploadData.toString();
+            editProduct();
+          }
+        })
+      }
     }
   }
 
@@ -161,6 +178,8 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
     this.submitted = false;
     this.AdminEditMode = false;
     this.addProduct.reset();
+    (document.getElementById("uploadImg") as HTMLInputElement).value = "";
+    this.selectedFile = null;
   }
 
   get f5(): any { return this.addProduct.controls; }
@@ -170,9 +189,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
     addProdTitle: new FormControl(null, [Validators.required]),
     addProdDescription: new FormControl(null, [Validators.required]),
     addProdPrice: new FormControl(null, [Validators.required, Validators.max(999), Validators.min(0.001)]),
-    addProdCategory: new FormControl(null, [Validators.required]),
-    addProdImg: new FormControl(null, [Validators.required])
-
+    addProdCategory: new FormControl(null, [Validators.required])
   });
 
   activator(e): void {
@@ -224,22 +241,33 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onResize(): void {
-    if(window.innerWidth < 992){
-      this.showCategoriesOnSidebar = true;
-    }
-    else this.showCategoriesOnSidebar = false ;
-
-      (document.getElementById("sidebar") as HTMLDivElement).style.height = "100vh";
-      setTimeout(() => {
-        (document.getElementById("sidebar") as HTMLDivElement).style.height = "-webkit-fill-available";
-      }, 100);
-      
-      if(501 > document.getElementsByClassName("shopProducts")[0].clientWidth && document.getElementsByClassName("shopProducts")[0].clientWidth > 401){
-        this.cols = 2;
+    if (window.innerWidth < 992) {
+      if (this.firstUse2 && this.user.role != "admin") {
+        setTimeout(() => {
+          this.showCategoriesOnSidebar = true;
+          this.toggleSidebar();
+        }, 100);
       }
-      else this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 250).toString());
-    
-      if (this.cols === 0) {
+      else {
+        setTimeout(() => {
+          this.showCategoriesOnSidebar = true;
+        }, 100);
+      }
+    }
+    else this.showCategoriesOnSidebar = false;
+    this.firstUse2 = false;
+
+    (document.getElementById("sidebar") as HTMLDivElement).style.height = "100vh";
+    setTimeout(() => {
+      (document.getElementById("sidebar") as HTMLDivElement).style.height = "-webkit-fill-available";
+    }, 100);
+
+    if (501 > document.getElementsByClassName("shopProducts")[0].clientWidth && document.getElementsByClassName("shopProducts")[0].clientWidth > 401) {
+      this.cols = 2;
+    }
+    else this.cols = parseInt(((document.getElementsByClassName("shopProducts")[0].clientWidth) / 250).toString());
+
+    if (this.cols === 0) {
       this.cols = 1
     }
 
@@ -345,24 +373,32 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   Boss_AddProduct(): void {
+    (document.getElementById("uploadImg") as HTMLInputElement).value = "";
     this.cartRefresh = true;
     this.submitted = true;
-    if (this.addProduct.valid) {
-      this.shopService.adminAdd({
-        title: this.addProduct.controls.addProdTitle.value,
-        description: this.addProduct.controls.addProdDescription.value,
-        price: this.addProduct.controls.addProdPrice.value,
-        type: this.addProduct.controls.addProdCategory.value,
-        url: this.addProduct.controls.addProdImg.value
-      }).subscribe(data => {
-        if (data.title === this.addProduct.controls.addProdTitle.value) {
-          this.adminAddmode = true;
-          this.submitted = false;
-          this.AdminEditMode = true;
-          this.ngOnInit();
+    if (this.addProduct.valid && this.selectedFile) {
+      this.shopService.adminUploadImage(this.selectedFile).subscribe(uploadData => {
+
+        if (uploadData) {
+
+          this.shopService.adminAdd({
+            title: this.addProduct.controls.addProdTitle.value,
+            description: this.addProduct.controls.addProdDescription.value,
+            price: this.addProduct.controls.addProdPrice.value,
+            type: this.addProduct.controls.addProdCategory.value,
+            url: "uploads/" + uploadData
+          }).subscribe(data => {
+            if (data.title === this.addProduct.controls.addProdTitle.value) {
+              this.adminAddmode = true;
+              this.submitted = false;
+              this.AdminEditMode = true;
+              this.ngOnInit();
+            }
+            else this.cartRefresh = false;
+          });
         }
         else this.cartRefresh = false;
-      });
+      })
     }
     else this.cartRefresh = false;
   }
@@ -403,12 +439,34 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  onFileSelected(ev): void {
+    if ((document.getElementById("uploadImg") as HTMLInputElement).value != "") {
+      this.selectedFile = <File>ev.target.files[0];
+      if (this.selectedFile.size <= 1000000) {
+        this.selectedFile.name
+      }
+      else {
+        (document.getElementById("uploadImg") as HTMLInputElement).value = "";
+        this.selectedFile = null;
+        alert("File must be under 1mb in size.");
+      }
+    }
+    else this.selectedFile = null;
+  }
+
+  checkIfUserCanceled(): void {
+    if ((document.getElementById("uploadImg") as HTMLInputElement).value === "") {
+      this.selectedFile = null;
+    }
+  }
 
   ngOnInit(): void | undefined {
-    
+
     (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.overflow = "hidden";
     this.user = this.userService.user;
     if (this.user.role === "admin") {
+      this.selectedFile = null;
+      this.submitted = false;
       if (!this.AdminEditMode) {
         this.toggleSidebar();
         this.AdminEditMode = false;
@@ -455,7 +513,7 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.onResize();
   }
 

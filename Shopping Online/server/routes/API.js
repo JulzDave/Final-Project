@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
 
+var specificImageName;
 var response;
 
 jbUser = require('../models/users.model');
@@ -331,11 +333,9 @@ router.put('/lockCartProd', function (req, res, next) {
       res.json(updatedjbCartProd)
     }
   )
-
 });
 
 router.put('/lockCart', function (req, res, next) {
-
 
   jbCart.updateMany({ client: req.body.userID },
     {
@@ -352,7 +352,6 @@ router.put('/lockCart', function (req, res, next) {
       res.json(updatedjbCart)
     }
   )
-
 });
 
 router.post('/adminProduct', function (req, res, next) {
@@ -369,7 +368,6 @@ router.post('/adminProduct', function (req, res, next) {
     if (err) throw err;
     res.json(doc)
   });
-
 });
 
 router.get('/adminProduct', function (req, res, next) {
@@ -400,8 +398,24 @@ router.put('/adminProduct', function (req, res, next) {
       res.json(updatedjbProduct)
     }
   )
-
 });
 
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/uploads/');
+  },
+  filename: function (req, file, cb) {
+    debugger;
+    specificImageName = file.originalname
+    cb(null, specificImageName)
+  }
+});
+
+var upload = multer({ storage: storage });
+
+router.post('/admin_img_upload', upload.single('productImage'), function (req, res) {
+
+  res.json(specificImageName);
+});
 
 module.exports = router;

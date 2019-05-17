@@ -1,4 +1,4 @@
-<div class="homeCont" *ngIf="userFetchedDetails?.role === 'admin'">
+<div class="homeCont" *ngIf="userFetchedDetails?.role === 'admin'" (window:resize)="onResize()">
   <div class="spinnerCont" *ngIf="!loadingComplete">
     <span class="loadCont">
       <div class="lds-roller">
@@ -14,7 +14,7 @@
     </span>
   </div>
 </div>
-<div class="homeCont" *ngIf="userFetchedDetails?.role != 'admin'">
+<div class="homeCont" *ngIf="userFetchedDetails?.role != 'admin'" (window:resize)="onResize()">
 
   <div class="spinnerCont" *ngIf="!loadingComplete">
     <span class="loadCont">
@@ -37,7 +37,7 @@
 
   <div id="logContofCont" *ngIf="alreadyRegistered">
     <div *ngIf="userFetchedDetails" class="cont spring" id="loginCont"
-      style="transform: translate(-30px);font-weight: bold; letter-spacing: 4px;">
+      style="transform: translate(-30px);font-weight: bold; letter-spacing: 4px;" [ngClass]="{'loginContWheconnected': userFetchedDetails.firstName}">
       <img src="../../../assets/images/CachetFB-V.png" alt="Signed in as {{userFetchedDetails.userName}}"
         class="stick"><br />
       Welcome <span style="text-transform: capitalize;">{{userFetchedDetails.firstName}}</span>!<br />
@@ -46,7 +46,7 @@
       to enter the shop<br />
     </div>
     <div class="cont" id="loginCont" *ngIf="!userFetchedDetails">
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" class="loginForm">
         <table>
           <tr>
             <th height="50" colspan="2"
@@ -80,7 +80,7 @@
         </table>
       </form>
       <br />
-      <div style="transform:translate(-40px)">
+      <div class="alignLoginUI">
         <div class="wrapper">
           <div class="button" (click)="login()" style="transform: translate(-10px);">
             <span class="button__mask"></span>
@@ -102,7 +102,7 @@
 
   <div id="regContofCont" *ngIf="!alreadyRegistered">
     <div *ngIf="userFetchedDetails" class="cont"
-      style="transform: translate(-30px);font-weight: bold; letter-spacing: 4px;">
+      class="regCont">
       <img src="../../../assets/images/CachetFB-V.png" alt="Signed in as {{userFetchedDetails.userName}}"
         class="stick"><br />
       Welcome to your first purchase <span
@@ -323,14 +323,14 @@
 
     <div *ngIf="userFetchedDetails" class="notifications"
       [ngClass]="{'notificationsCaseContinue': cartStatus === 'Continue Shopping'}">
-      <ul style="font-size: 100%; text-indent: 0px;" *ngIf="cartCreationDate || orderCreationDate">
+      <ul class="notifyStatusWhenLogged" *ngIf="cartCreationDate || orderCreationDate">
         <span style="font-size:110%;text-decoration: underline;text-indent: -25px;"> Notifications:</span>
         <li *ngIf="cartCreationDate">You have an open cart, totaling <span>${{openCartPrice}},</span> from
           <span>{{cartCreationDate}}</span></li>
         <li *ngIf="orderCreationDate">Your last purchase was on <span>{{orderCreationDate}}</span></li>
       </ul>
       <div class="wrapper" style="width: max-content; margin-left: -18px;">
-        <div class="button" (click)="openShop()" style="margin-top:25px;transform: translate(-12px) scale(0.8);">
+        <div class="button shopBtn" (click)="openShop()">
           <span class="button__mask"></span>
           <span class="button__text" style="letter-spacing: 5px;font-family:serif;">{{cartStatus}}</span>
           <span class="button__text button__text--bis"

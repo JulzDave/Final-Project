@@ -50,15 +50,15 @@ export class UserService {
 
   auth(ev: any): void {
     this.user = ev;
-    
-    userName = ev.userName,
-      password = ev.password
+    userName = ev.userName;
+    password = ev.password;
+    debugger;
   }
 
   authStep2(): boolean {
 
     this.getAllUsers({ userName: userName, password: password }).subscribe(data => {
-      
+      debugger;
       if (userName === data.userName && password === data.password) {
         
         validated = true;

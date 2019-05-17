@@ -72,7 +72,7 @@ export class ShopService {
     return this.http.delete('/api/discardCart/' + cartID);
   }
 
-  goToOrder(ev:any):void {
+  goToOrder(ev: any): void {
     this.order = ev.myProducts;
     this.orderCost = ev.orderCost;
     this.user = ev.user;
@@ -141,6 +141,14 @@ export class ShopService {
       url: ev.url,
       price: ev.price
     }, httpOptions);
+  }
+
+  adminUploadImage(ev: File): Observable<any> {
+    const myFormData = new FormData();
+    const imageDate = new Date();
+    const imgName = ev.name.split(".")[0] + "_" + imageDate.getTime() + "." + ev.name.split(".")[1];
+    myFormData.append("productImage", ev, imgName);
+    return this.http.post("api/admin_img_upload", myFormData)
   }
 
 }

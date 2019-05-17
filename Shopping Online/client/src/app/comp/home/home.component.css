@@ -6,6 +6,7 @@
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
+    width:100vw;
 }
 
 #registerCont {
@@ -61,7 +62,17 @@
 #regContofCont {
     display:flex;
     justify-content: flex-start;
-}    
+}
+
+.regCont{
+    transform: translate(-30px);
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-align: center;
+    font-family: 'Open Sans Condensed', sans-serif;
+    width: 280px;
+    margin-left: 60px;
+}
 
 table {
     transform: translate(15px)
@@ -143,6 +154,20 @@ table {
     background-color: lightblue;
 }
 
+.alignLoginUI{
+    transform:translate(-40px)
+}
+
+.notifyStatusWhenLogged{
+    font-size: 100%;
+    text-indent: 0px;
+}
+
+.shopBtn{
+    margin-top:25px;
+    transform: translate(-12px) scale(0.8);
+}
+
   /*----------------------------------------------
     MEDIA QUERIES
   ----------------------------------------------*/
@@ -173,6 +198,14 @@ table {
     .spinnerCont{
         align-self: self-start;
     }
+}
+
+@media only screen and (max-width: 1222px) and (min-width: 963px) {
+    
+    .bPanel {
+        margin-top: 100px;
+    }
+
 }
 
 @media only screen and (max-width: 1426px) and (min-width: 1222px) {
@@ -220,8 +253,12 @@ table {
         transform: translate(-20px);
     }
 
-    .homeCont{
+    .homeCont {
         height: auto;
+    }
+
+    #loginCont {
+        margin-top: 180px;
     }
 }
 
@@ -236,7 +273,43 @@ table {
 
     #loginCont {
         margin-top: 180px;
+        width: -webkit-fill-available;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0px;
+        padding-right: 35px;
     }
+
+    .regCont{
+        transform: translate(-20px);
+        margin-top: 180px;
+        width: -webkit-fill-available;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0px;
+        margin-left: 0px;
+    }
+
+    .loginContWheconnected{
+        padding: 0px 0px 20px 60px!important;
+    }
+
+    
+    .alignLoginUI{
+        transform:translate(0px)
+    }
+
+    .loginForm{
+        transform: translate(12px);
+    }
+
+    .stick {
+        align-self: center;
+        margin-left: 0px;
+    }
+
 }
 
 @media only screen and (max-width: 430px) {
@@ -251,6 +324,14 @@ table {
     #logContofCont{
         margin-top: 25px;
     }
+
+    .notifyStatusWhenLogged {
+        width: 90%;
+    }
+
+    .regCont{
+        margin-left: 0px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -260,7 +341,10 @@ table {
         display: flex;
         justify-content: space-evenly;
         flex-wrap: wrap;
-        transform: translateX(50px);
+    }
+
+    .shopBtn{
+        max-width: 260px;
     }
     
 }

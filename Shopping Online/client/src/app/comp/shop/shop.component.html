@@ -147,16 +147,13 @@
                             <div class="formErr blocked" *ngIf="f5.addProdCategory.errors.required">Category required
                             </div>
                         </div>
-                        <mat-form-field>
-                            <input [ngClass]="{ 'is-invalid': submitted && f5.addProdImg.errors }" autocomplete="off"
-                                formControlName="addProdImg" class="sidebarInput" matInput type="text"
-                                placeholder="Image url">
-                            <button mat-button *ngIf="f5.addProdImg.value" matSuffix mat-icon-button aria-label="Clear">
-                                <mat-icon (click)="f5.addProdImg.setValue(null)">close</mat-icon>
-                            </button>
-                        </mat-form-field>
-                        <div *ngIf="submitted && f5.addProdImg.errors">
-                            <div class="formErr blocked" *ngIf="f5.addProdImg.errors.required">Image url required</div>
+                        <div>
+                            <input (change)="onFileSelected($event)" (blur)="checkIfUserCanceled()" id="uploadImg"
+                                name="productImage" type="file" accept="image/jpeg" class="sidebarInput"
+                                style="padding-bottom: 28px; text-indent: 0px; color: white; background: rgba(0,0,0,0.3); border-radius: 11px;width: 185px; cursor: pointer;" />
+                        </div>
+                        <div *ngIf="submitted && !selectedFile" style="margin-top: 25px;">
+                            <div class="formErr blocked" *ngIf="!selectedFile">Image source required</div>
                         </div>
                     </span>
                 </form>
@@ -273,9 +270,9 @@
         </div>
     </div>
 
-    <nav style="z-index: 929;display: flex; align-items: end;    border-bottom: 2px solid white;"
+    <nav style="z-index: 929;display: flex; align-items: end; border-bottom: 2px solid white; position: fixed;"
         class="navbar fixed-top navbar-expand-lg navbar-dark bg-success secondaryNav">
-        <p (click)="toggleSidebar()" class="navbar-brand"
+        <p (click)="toggleSidebar()" id="toggleSidebar" class="navbar-brand"
             style="align-self:center; -webkit-text-stroke:0px;font-family: 'Lobster', cursive;font-size: 40px;cursor: pointer;margin-top: 15px;">
             <mat-icon *ngIf="user.role === 'user'" class="sidebarToggler">line_style</mat-icon>
             <mat-icon *ngIf="user.role === 'admin'" class="sidebarToggler">add_box</mat-icon>

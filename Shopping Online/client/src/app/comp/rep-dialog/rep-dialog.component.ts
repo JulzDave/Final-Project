@@ -13,11 +13,17 @@ var user: any;
 })
 export class RepDialogComponent implements OnInit {
 
-  chosenProduct: string;
+  // chosenProduct: string;
   amount: number;
   totProdPrice: any;
   user: any;
   chosenProductID: string;
+  title: string;
+  description: string;
+  imgUrl: string;
+  img_height: string;
+  img_width: string;
+  priceTag: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private shopService: ShopService, private userService: UserService) { }
 
@@ -66,12 +72,19 @@ export class RepDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chosenProduct = this.data.product;
+    // this.chosenProduct = this.data.product;
     this.amount = 1;
     this.totProdPrice = this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1];
-    this.chosenProductID = this.data.product.getElementsByTagName("img")[0].id
+    this.chosenProductID = this.data.product.getElementsByTagName("img")[0].id;
     this.user = this.data.user;
     user = this.data.user;
+    this.title = this.data.product.getElementsByTagName('mat-card-title')[0].innerText;
+    this.description = this.data.product.getElementsByTagName("mat-card-content")[0].innerText;
+    this.imgUrl = this.data.product.getElementsByTagName("img")[0].currentSrc;
+    this.img_height = this.data.product.getElementsByTagName('img')[0].height;
+    this.img_width = this.data.product.getElementsByTagName('img')[0].widthimg_width;
+    this.priceTag = this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1].substr(0,5);
+    debugger;
   }
 }
 

@@ -1,16 +1,12 @@
 .shopCont {
     padding: 15px 10%;
-    height: -webkit-fill-available;
+    height: auto;
     display: flex;
     flex-direction: row;
     align-items: self-end;
     background-image: linear-gradient(90deg, transparent 10%, #212121 0%, #212121 90%, transparent 90%);
     overflow-y: hidden;
 }
-
-
-
-
 
 .wrapper {
     display: flex;
@@ -19,7 +15,6 @@
     flex-direction: row;
     margin-left: -1px;
     margin-top: 40px;
-
 }
 
 #sidebar {
@@ -95,6 +90,7 @@ a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
     transform: rotate(47deg);
     top: 8px;
 }
+
 a[aria-expanded="true"]::before {
     content: '\22BF';
     transform: rotate(-133deg);
@@ -167,6 +163,7 @@ p.article:active{
     font-size: 100%;
     padding-bottom: 7px;
 }
+
 .closeBar:hover{
     font-weight: bolder;
     background: #fff;
@@ -184,10 +181,8 @@ p.article:active{
     flex-grow: 1;
 }
 
-
-
 .bg-success{
-background: #d00000!important;
+    background: #d00000!important;
 }
 
 /* ---------------------------------------------------
@@ -612,6 +607,7 @@ a[aria-expanded="true"] {
     padding: 15px;
     width: 230px;
     overflow-x: hidden;
+    contain: content;
 }
 
 .inspected::after{
@@ -726,21 +722,7 @@ a[aria-expanded="true"] {
     ---------------------------------------------------*/
 
     .loader {
-        /* color: #ffffff;
-        font-size: 20px;
-        margin: 100px auto;
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-        position: relative;
-        text-indent: -9999em;
-        -webkit-animation: load4 1.3s infinite linear;
-        animation: load4 1.3s infinite linear;
-        -webkit-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        transform: translateZ(0); */
-
-        color: #fff;
+    color: #fff;
     font-size: 20px;
     margin: 100px auto;
     width: 1em;
@@ -753,9 +735,6 @@ a[aria-expanded="true"] {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     z-index: 1;
-    /* background: black; */
-    /* margin-top: 33vh; */
-    /* margin-left: 29vw; */
     line-height: 21px;
     font-family: lobster;
       }

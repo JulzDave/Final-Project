@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -31,6 +31,8 @@ export class HomeComponent implements OnInit {
   totalAmountOfOrders: number = null;
   openCartPrice: number = null;
   loadingComplete: boolean = false;
+  interval:any;
+  destroyed:boolean = false;
 
   isRegistered(): void {
     this.submitted = false;
@@ -207,16 +209,30 @@ export class HomeComponent implements OnInit {
   //----------------------Start Shopping--------------------
 
   openShop(): void {
-    this.router.navigate(['shop']);
-    setTimeout(() => {
+    this.interval = setInterval(() => {
+      this.loadingComplete = false;
       this.router.navigate(['shop']);
-    }, 400);
+      if(this.destroyed){
+        clearInterval(this.interval);
+      }
+    }, 200);
+    
   }
 
   //----------------------End of shopping--------------------
-
+  onResize(){
+    if(window.outerWidth < 401){
+      (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.display = "table";
+      (document.getElementsByTagName("html") as HTMLCollectionOf<HTMLHtmlElement>)[0].style.display = "table";
+    }
+    else{ 
+    (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.display = "block";
+    (document.getElementsByTagName("html") as HTMLCollectionOf<HTMLHtmlElement>)[0].style.display = "block";
+  }
+  }
 
   ngOnInit(): void {
+    this.onResize()
     this.userService.checkSession().subscribe(data => {
       if (data.user) {
         this.userFetchedDetails = data.user;
@@ -248,4 +264,9 @@ export class HomeComponent implements OnInit {
     loadCondition();
   }
 
+  ngOnDestroy(){
+    this.destroyed = true;
+    (document.getElementsByTagName("body") as HTMLCollectionOf<HTMLBodyElement>)[0].style.display = "block";
+    (document.getElementsByTagName("html") as HTMLCollectionOf<HTMLHtmlElement>)[0].style.display = "block";
+  }
 }

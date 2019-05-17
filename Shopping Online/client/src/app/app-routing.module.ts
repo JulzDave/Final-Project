@@ -8,12 +8,10 @@ import { OrderComponent } from './comp/order/order.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'home', pathMatch:'full'},
-  {path:'home', component:HomeComponent},
-  {path:'shop', redirectTo:'shop', pathMatch:'full',},
+  {path:'home', component:HomeComponent}, 
   {path:'shop',  canActivate:[AuthGuard], component:ShopComponent},
-  {path:'order', redirectTo:'order', pathMatch:'full',},
   {path:'order',  canActivate:[AuthGuard], component:OrderComponent},
-  { path: '**', pathMatch: 'full', redirectTo: '/404' },
+  { path: '**', redirectTo: '/404' },
   { path: '404', component: ErrComponent }
 
 ];
