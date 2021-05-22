@@ -491,7 +491,6 @@ export class ShopComponent implements OnInit, OnDestroy, AfterViewInit {
 
       });
     });
-
     this.shopService.searchUserCart(this.user._id).subscribe(data => {
       this.myCart = data
       if (data.length === 0) {

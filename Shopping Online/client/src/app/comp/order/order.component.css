@@ -321,7 +321,7 @@ input[type=number]::-webkit-outer-spin-button {
 .success{
     position: fixed;
     width: 100vw;
-    height: 85.3vh;
+    height: 100vh;
     top: 55px;
     z-index: 1;
     display: flex;
@@ -345,7 +345,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .successReturn{
-cursor: pointer;
+cursor: pointer!important;
 color: #d00000;
 pointer-events:auto;
 
@@ -362,7 +362,7 @@ pointer-events:auto;
 
 .successDownloadreceipt{
     color: #d00000;
-    cursor: pointer;
+    cursor: pointer!important;
     pointer-events:auto;
     
 }

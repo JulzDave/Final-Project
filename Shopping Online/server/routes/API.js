@@ -405,7 +405,6 @@ var storage = multer.diskStorage({
     cb(null, './public/uploads/');
   },
   filename: function (req, file, cb) {
-    debugger;
     specificImageName = file.originalname
     cb(null, specificImageName)
   }

@@ -84,7 +84,6 @@ export class RepDialogComponent implements OnInit {
     this.img_height = this.data.product.getElementsByTagName('img')[0].height;
     this.img_width = this.data.product.getElementsByTagName('img')[0].widthimg_width;
     this.priceTag = this.data.product.getElementsByTagName("mat-card-subtitle")[0].innerText.split("$")[1].substr(0,5);
-    debugger;
   }
 }
 

@@ -17,7 +17,7 @@ app.use(session({
   }))
   
 // Connect locally via: ' mongodb://localhost/JB-Market '
-mongoose.connect('mongodb+srv://julian:awdawd@jb-brunch-yz2u4.mongodb.net/JB-Market?retryWrites=true', {useNewUrlParser: true, useCreateIndex:true});
+mongoose.connect('mongodb+srv://julian:awdawd@jb-brunch-yz2u4.mongodb.net/JB-Market?retryWrites=true', {useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true});
 
 var api = require('./routes/API');
 var shoppingRouter = require('./routes/shopping');
